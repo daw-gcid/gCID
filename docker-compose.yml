@@ -1,0 +1,28 @@
+version: "3"
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - 80:3000
+    depends_on:
+      - backend
+      - mariadb
+    volumes:
+      - ./frontend/app:/app/app
+    command: npm run dev
+
+  backend:
+    build: ./backend
+    depends_on:
+      - mariadb
+    volumes:
+      - ./backend/src:/app/src:cached
+    command: npm run start:dev
+
+  mariadb:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=gcid
+      - MYSQL_USER=gcid
+      - MYSQL_PASSWORD=gcid
