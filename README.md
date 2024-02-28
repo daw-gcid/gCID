@@ -2,7 +2,7 @@
 
 Este é um projeto que utiliza Next.js para o frontend e Nest.js para o backend. 
 
-## Linguagens Utilizadas
+## Frameworks utilizados
 
 - Frontend: [Next.js](https://nextjs.org/)
 
