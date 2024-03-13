@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreateInstitutoDto } from './dto/create-instituto.dto';
 import { UpdateInstitutoDto } from './dto/update-instituto.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Instituto } from './entities/instituto.entity';
+import { Repository } from 'typeorm';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class InstitutoService {
-  create(createInstitutoDto: CreateInstitutoDto) {
-    return 'This action adds a new instituto';
+  constructor(
+    @InjectRepository(Instituto)
+    private institutoRepository: Repository<Instituto>,
+    private userService: UserService,
+  ) {}
+
+  async create(createInstitutoDto: CreateInstitutoDto) {
+    const instituto = await this.institutoRepository.save(createInstitutoDto);
+    this.userService.update(createInstitutoDto.userId, {
+      instituto: instituto,
+    });
+    return instituto;
   }
 
   findAll() {
-    return `This action returns all instituto`;
+    return this.institutoRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} instituto`;
+  findOne(id: string) {
+    return this.institutoRepository.findOne({ where: { id: id } });
   }
 
-  update(id: number, updateInstitutoDto: UpdateInstitutoDto) {
-    return `This action updates a #${id} instituto`;
+  update(id: string, updateInstitutoDto: UpdateInstitutoDto) {
+    return this.institutoRepository.update(id, updateInstitutoDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} instituto`;
+  remove(id: string) {
+    return this.institutoRepository.delete(id);
   }
 }

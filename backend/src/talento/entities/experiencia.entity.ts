@@ -1,7 +1,14 @@
-import { Column, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Talento } from './talento.entity';
 import { Habilidade } from './habilidade.entity';
 
+@Entity()
 export class Experiencia {
   // Experiencia entity definition
   //relação com talento
@@ -14,10 +21,10 @@ export class Experiencia {
   @Column({ length: 60, name: 'expinstituicao' })
   instituicao: string;
 
-  @Column({ length: 60, name: 'expdtinicio' })
+  @Column({ name: 'expdtinicio' })
   dtInicio: Date;
 
-  @Column({ length: 60, name: 'expdtfim' })
+  @Column({ name: 'expdtfim' })
   dtFim: Date;
 
   @Column({ length: 60, name: 'expdescricao' })

@@ -5,11 +5,13 @@ import { UserModule } from './user/user.module';
 import { TalentoModule } from './talento/talento.module';
 import { ClienteModule } from './cliente/cliente.module';
 import { InstitutoModule } from './instituto/instituto.module';
+import { ProjetoModule } from './projeto/projeto.module';
+import { AreaModule } from './area/area.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env.dev', '.env'],
+      envFilePath: ['.env', '.env.dev'],
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
@@ -28,6 +30,8 @@ import { InstitutoModule } from './instituto/instituto.module';
     TalentoModule,
     ClienteModule,
     InstitutoModule,
+    ProjetoModule,
+    AreaModule,
   ],
   controllers: [],
   providers: [],

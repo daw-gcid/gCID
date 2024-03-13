@@ -17,10 +17,10 @@ export class Talento {
   @Column({ length: 60, name: 'talcurso' })
   curso: string;
 
-  @Column({ length: 60, name: 'taldtinicio' })
+  @Column({ name: 'taldtinicio' })
   dtInicio: Date;
 
-  @Column({ length: 60, name: 'taldtfim' })
+  @Column({ name: 'taldtfim' })
   dtFim: Date;
 
   @Column({ length: 60, name: 'talemail' })
@@ -32,7 +32,7 @@ export class Talento {
   @Column({ length: 30, name: 'talnacionalidade' })
   nacionalidade: string;
 
-  @Column({ length: 30, name: 'taldtnascimento' })
+  @Column({ name: 'taldtnascimento' })
   dtNascimento: Date;
 
   @Column({ length: 30, name: 'talcidade' })
@@ -46,6 +46,18 @@ export class Talento {
 
   @Column({ length: 255, nullable: true, name: 'tallinkedin' })
   linkedin: string;
+
+  @Column({ length: 255, name: 'talpathmatricula' })
+  pathMatricula: string;
+
+  @Column({ length: 255, name: 'talpathhistorico' })
+  pathHistorico: string;
+
+  @Column({ type: 'decimal', precision: 5, scale: 2, name: 'talranking' })
+  ranking: number;
+
+  @Column({ type: 'float', precision: 5, scale: 2, name: 'talcoeficiente' })
+  coeficiente: number;
 
   @OneToMany(() => Idioma, (idioma) => idioma.talento, {
     nullable: true,

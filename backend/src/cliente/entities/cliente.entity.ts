@@ -4,8 +4,10 @@ import {
   Column,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
+import { Projeto } from 'src/projeto/entities/projeto.entity';
 
 @Entity()
 export class Cliente {
@@ -13,21 +15,22 @@ export class Cliente {
   id: number;
 
   @Column({ nullable: true, length: 14 })
-  clicnpj: string;
+  cnpj: string;
 
   @Column({ nullable: true, length: 255 })
-  clinome: string;
+  nome: string;
 
   @Column({ nullable: true, length: 256 })
-  cliemail: string;
+  email: string;
 
-  @Column({ nullable: true, length: 10 })
-  clitelefone: string;
+  @Column({ nullable: true, length: 15 })
+  telefone: string;
 
   @Column({ nullable: true, length: 100 })
-  cliendereco: string;
+  endereco: string;
 
-  // Outros campos específicos do Cliente, se houver
+  @OneToMany(() => Projeto, (projeto) => projeto.cliente, { nullable: true })
+  projetos: Projeto[];
 
   @OneToOne(() => User, (user) => user.cliente)
   @JoinColumn()
