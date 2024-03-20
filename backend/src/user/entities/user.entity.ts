@@ -18,7 +18,7 @@ export class User {
   @Column({ length: 50, unique: true })
   username: string;
 
-  @Column({ length: 100 })
+  @Column({ length: 100, unique: true })
   email: string;
 
   @Column({ nullable: true, type: 'datetime' })
@@ -35,15 +35,15 @@ export class User {
   @Column({ type: 'int' }) // 1 - Talento, 2 - Instituto, 3 - Cliente
   userType: number;
 
-  @OneToOne(() => Talento, { cascade: true, nullable: true })
+  @OneToOne(() => Talento, { cascade: true })
   @JoinColumn()
   talento: Talento;
 
-  @OneToOne(() => Instituto, { cascade: true, nullable: true })
+  @OneToOne(() => Instituto, { cascade: true })
   @JoinColumn()
   instituto: Instituto;
 
-  @OneToOne(() => Cliente, { cascade: true, nullable: true })
+  @OneToOne(() => Cliente, { cascade: true })
   @JoinColumn()
   cliente: Cliente;
 }

@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/src/context/authContext";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,8 +12,10 @@ export default function NestedLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <AuthProvider>
     <html lang="pt-br" className="h-screen">
       <body className='h-screen'>{children}</body>
     </html>
+    </AuthProvider>
   );
 }

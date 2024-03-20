@@ -31,6 +31,33 @@ export class UserService {
     return user;
   }
 
+  async findOneId(id: string) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new BadRequestException(`User with id ${id} not found`);
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...result } = user;
+    return result;
+  }
+
+  async findUsernameOrEmail(username?: string, email?: string) {
+    if (!username && !email) {
+      throw new BadRequestException(`Username or email is required`);
+    }
+
+    let user: User | undefined;
+    if (username) {
+      user = await this.userRepository.findOne({ where: { username } });
+    } else if (email) {
+      user = await this.userRepository.findOne({ where: { email } });
+    }
+    if (!user) {
+      throw new BadRequestException(`User not found`);
+    }
+    return user;
+  }
+
   async remove(id: string) {
     try {
       const user = await this.userRepository.findOne({ where: { id } });

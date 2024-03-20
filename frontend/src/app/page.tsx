@@ -1,8 +1,21 @@
-import HomeLogo from './components/HomeLogo'
-import ImgHome from './components/ImgHome'
-import NavBar from './components/NavBar'
+"use client";
+import { useContext } from 'react'
+import HomeLogo from '../components/HomeLogo'
+import ImgHome from '../components/ImgHome'
+import NavBar from '../components/NavBar'
+import { AuthContext } from '../context/authContext'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
+
+  const {isAuthenticated} = useContext(AuthContext)
+  const Router = useRouter()
+
+  if(!isAuthenticated) {
+    Router.push('/login');
+    return null;
+  }
+
   return (
     <main className='h-full mt-16'>
       <NavBar/>
