@@ -1,5 +1,5 @@
 import React from "react";
-import backgroundLamp from "../../public/background-lamp.png";
+import backgroundLamp from "../../../public/background-lamp.png";
 
 export default function LandingPage() {
   return (

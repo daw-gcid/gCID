@@ -8,7 +8,7 @@ services:
       - backend
       - mariadb
     volumes:
-      - ./frontend/app:/app/app
+      - ./frontend/src:/app/src
     command: npm run dev
 
   backend:
@@ -20,8 +20,6 @@ services:
     command: npm run start:dev
     ports:
       - 3000:3000
-    
-
 
   mariadb:
     image: mariadb
@@ -32,3 +30,8 @@ services:
       - MYSQL_PASSWORD=gcid
     ports:
       - 3306:3306
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
