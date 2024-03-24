@@ -29,7 +29,7 @@ services:
       - MYSQL_USER=gcid
       - MYSQL_PASSWORD=gcid
     ports:
-      - 3306:3306
+      - 33069:3306
 
   redis:
     image: redis
