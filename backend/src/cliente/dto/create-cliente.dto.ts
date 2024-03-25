@@ -17,5 +17,5 @@ export class CreateClienteDto {
   endereco: string;
 
   @ApiProperty()
-  userId: string;
+  userId?: string;
 }
