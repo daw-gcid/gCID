@@ -1,7 +1,7 @@
 export default function ImgHome() {
     return (
         <svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_234_224)">
+            <g clipPath="url(#clip0_234_224)">
                 <path d="M600 0H0V600H600V0Z" fill="white" />
                 <path d="M307.222 416.788C307.222 407.884 300.004 400.666 291.1 400.666C282.196 400.666 274.979 407.884 274.979 416.788H243.733V511.522H338.467V416.788H307.222Z" fill="#7ED957" />
                 <path d="M296.822 294.146C297.046 285.246 290.011 277.849 281.111 277.625C272.21 277.402 264.814 284.436 264.589 293.336L233.353 292.552L230.975 387.256L264.916 388.108C264.936 378.912 272.395 371.464 281.596 371.464C290.808 371.464 298.277 378.932 298.277 388.145C298.277 388.415 298.249 388.678 298.236 388.945L325.679 389.634L328.057 294.93L296.822 294.146Z" fill="url(#paint0_linear_234_224)" />
@@ -109,8 +109,8 @@ export default function ImgHome() {
             </g>
             <defs>
                 <linearGradient id="paint0_linear_234_224" x1="279.516" y1="277.62" x2="279.516" y2="389.634" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#0097B2" />
-                    <stop offset="1" stop-color="#7ED957" />
+                    <stop stopColor="#0097B2" />
+                    <stop offset="1" stopColor="#7ED957" />
                 </linearGradient>
                 <clipPath id="clip0_234_224">
                     <rect width="600" height="600" fill="white" />

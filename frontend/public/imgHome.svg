@@ -107,8 +107,8 @@
 </g>
 <defs>
 <linearGradient id="paint0_linear_234_224" x1="279.516" y1="277.62" x2="279.516" y2="389.634" gradientUnits="userSpaceOnUse">
-<stop stop-color="#0097B2"/>
-<stop offset="1" stop-color="#7ED957"/>
+<stop stopColor="#0097B2"/>
+<stop offset="1" stopColor="#7ED957"/>
 </linearGradient>
 <clipPath id="clip0_234_224">
 <rect width="600" height="600" fill="white"/>
