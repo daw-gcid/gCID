@@ -17,12 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
+    // <AuthProvider>
       <html lang="pt-br">
         <body className={inter.className}>
           {children}
         </body>
       </html>
-    </AuthProvider>
+    // </AuthProvider>
   );
 }
