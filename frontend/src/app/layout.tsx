@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // <AuthProvider>
+    <AuthProvider>
       <html lang="pt-br">
         <body className={inter.className}>
           <NavBar />
@@ -27,6 +27,6 @@ export default function RootLayout({
           </ToastProvider>
         </body>
       </html>
-    // </AuthProvider>
+    </AuthProvider>
   );
 }
