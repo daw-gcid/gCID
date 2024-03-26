@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useContext } from 'react';
 import Logo from '../../../components/gcidLogo'
 
