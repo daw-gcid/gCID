@@ -16,9 +16,6 @@ export class InstitutoService {
 
   async create(createInstitutoDto: CreateInstitutoDto) {
     const instituto = await this.institutoRepository.save(createInstitutoDto);
-    this.userService.update(createInstitutoDto.userId, {
-      instituto: instituto,
-    });
     return instituto;
   }
 

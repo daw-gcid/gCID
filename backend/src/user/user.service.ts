@@ -13,7 +13,10 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     try {
-      return await this.userRepository.save(createUserDto);
+      const user = await this.userRepository.save(createUserDto);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...result } = user;
+      return result;
     } catch (error) {
       throw new BadRequestException(error.message, error.code);
     }

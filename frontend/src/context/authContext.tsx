@@ -1,15 +1,29 @@
 "use client";
 
-import { ReactNode, createContext, useEffect, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { API_URL } from "../../config/urls";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { api } from "../api/axios";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
+import { useCookies } from "next-client-cookies";
 
 type signInDto = {
   email: string;
   password: string;
+};
+
+type signUpDto = {
+  username: string;
+  email: string;
+  password: string;
+  userType: number;
 };
 
 type AuthContextType = {
@@ -17,12 +31,17 @@ type AuthContextType = {
   isAuthenticated: boolean;
   login: (signInDto: signInDto) => Promise<void>;
   logout: () => Promise<void>;
-  checkAuthentication(): Promise<void>;
+  checkAuthentication(): void;
+  signUp: (signUpDto: signUpDto) => Promise<void>;
 };
 
 type User = {
-  name: string;
+  username: string;
   email: string;
+  userType: number;
+  image: string;
+  status: number;
+  id: string;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -31,72 +50,141 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const isAuthenticated = user !== null;
+  const [loading, setloading] = useState(false);
+  const cookies = useCookies();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     checkAuthentication();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // TODO: Give a better fail message
-  async function checkAuthentication() {
+  function checkAuthentication() {
     if (user !== null) return;
+    setloading(true);
 
-    toast.promise(api.get<User>(`${API_URL}/auth/me`)
+    api
+      .get<User>(`${API_URL}/auth/me`)
       .then((response) => {
         setUser(response.data);
+        setloading(false);
       })
-      , {
-        pending: 'Checking authentication...',
-        error: {
-          render({ data }) {
-            console.error('Authentication failed:', (data as AxiosError).message);
-            router.push('/login');
-            return (data as AxiosError).message;
-          }
-        },
+      .catch((error) => {
+        if (
+          window.location.pathname === "/" ||
+          window.location.pathname === "/login"
+        ) {
+          return;
+        }
+        setloading(false);
+        router.push("/login");
       });
   }
 
   async function login(signInDto: signInDto) {
     toast.promise(api.post<User>(`${API_URL}/auth/login`, signInDto), {
-      pending: 'Logging in...',
+      pending: "Logging in...",
       success: {
         render({ data: response }) {
+          console.log(response.data);
           setUser(response.data);
-          router.push('/');
-          return 'Login successful';
-        }
+          cookies.set("user", JSON.stringify(response.data), {
+            // Convert response.data to a string
+            expires: 2,
+            sameSite: "None",
+            secure: true,
+          });
+          if (response.data.status === 0) {
+            if (response.data.userType === 1) {
+              router.push("/signin/cliente");
+            } else if (response.data.userType === 2) {
+              router.push("/signin/instituto");
+            } else if (response.data.userType === 3) {
+              router.push("/signin/talento");
+            }
+          }else {
+            if (response.data.userType === 1) {
+              router.push("/client");
+            } else if (response.data.userType === 2) {
+              router.push("/instituto");
+            } else if (response.data.userType === 3) {
+              router.push("/talento");
+            }
+          }
+
+          return "login realizado com sucesso!";
+        },
       },
       error: {
-        render({ data }) {
-          console.error('Login failed:', (data as AxiosError).message);
+        render({ data }: any) {
+          if (data.message === "Request failed with status code 401") {
+            return "Usuário ou senha inválidos";
+          }else if(data.message === "Request failed with status code 400"){
+            return "Usuário ou email inválidos";
+          }
+
+          console.error("Login failed:", (data as AxiosError).message);
           return (data as AxiosError).message;
-        }
-      }
+        },
+      },
     });
   }
 
   async function logout() {
     toast.promise(api.post(`${API_URL}/auth/logout`), {
-      pending: 'Logging out...',
+      pending: "Logging out...",
       success: {
         render() {
           setUser(null);
-          router.push('/login');
-          return 'Logout successful';
-        }
+          cookies.remove("user");
+          router.push("/login");
+          return "Logout successful";
+        },
       },
       error: {
         render({ data }) {
-          console.error('Logout failed:', (data as AxiosError).message);
+          console.error("Logout failed:", (data as AxiosError).message);
           return (data as AxiosError).message;
-        }
-      }
+        },
+      },
+    });
+  }
+
+  async function signUp(signUpDto: any) {
+    toast.promise(api.post<User>(`${API_URL}/user/`, signUpDto), {
+      pending: "Signing up...",
+      success: {
+        render({ data: response }) {
+          setUser(response.data);
+          console.log(response.data);
+          cookies.set("user", JSON.stringify(response.data), {
+            expires: 2,
+            sameSite: "None",
+            secure: true,
+          });
+          window.location.reload();
+          return "Sign up successful";
+        },
+      },
+      error: {
+        render({ data }) {
+          console.error("Erro no cadastro:", (data as AxiosError).message);
+          return (data as AxiosError).message;
+        },
+      },
     });
   }
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, login, logout, checkAuthentication }}
+      value={{
+        user,
+        isAuthenticated,
+        login,
+        logout,
+        checkAuthentication,
+        signUp,
+      }}
     >
       {children}
     </AuthContext.Provider>
