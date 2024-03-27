@@ -11,7 +11,7 @@ import { Projeto } from 'src/projeto/entities/projeto.entity';
 
 @Entity()
 export class Cliente {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column({ nullable: true, length: 14 })
@@ -32,7 +32,7 @@ export class Cliente {
   @OneToMany(() => Projeto, (projeto) => projeto.cliente, { nullable: true })
   projetos: Projeto[];
 
-  @OneToOne(() => User, (user) => user.cliente)
+  @OneToOne(() => User)
   @JoinColumn()
   user: User;
 }

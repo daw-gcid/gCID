@@ -1,6 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Experiencia } from './experiencia.entity';
 import { Idioma } from './idioma.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity()
 export class Talento {
@@ -68,4 +76,8 @@ export class Talento {
     nullable: true,
   })
   experiencias: Experiencia[];
+
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: User;
 }

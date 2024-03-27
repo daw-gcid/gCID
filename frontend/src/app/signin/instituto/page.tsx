@@ -1,12 +1,16 @@
-import { AuthContext } from "@/src/context/authContext";
-import { useContext } from "react";
-import RadioButtonGroup from "../../login/components/radioUser";
+"use client";
 import HomeLogo from "@/src/components/HomeLogo";
+import { useContext } from "react";
+import { AuthContext } from "@/src/context/authContext";
 
-export default function page() {
+ function Page() {
 
-  // const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  if(!user) {
+    return null;
+  }
 
+  
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -134,3 +138,4 @@ export default function page() {
     </>
   );
 }
+export default Page;
