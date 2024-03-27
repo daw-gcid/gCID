@@ -7,8 +7,8 @@ import { Request } from 'express';
 export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
-  login() {
-    return;
+  login(@Req() req: Request) {
+    return req.user;
   }
 
   @UseGuards(AuthenticatedGuard)

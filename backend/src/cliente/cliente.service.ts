@@ -15,11 +15,17 @@ export class ClienteService {
 
   async create(createClienteDto: CreateClienteDto) {
     const cliente = await this.clienteRepository.create(createClienteDto);
-    this.userService.update(createClienteDto.userId, {
-      cliente: cliente,
-    });
-    const user = await this.userService.findOne(createClienteDto.userId);
-    cliente.user = user;
+    cliente.user = await this.userService.findOne(createClienteDto.userId);
+    if (!cliente.user) {
+      throw new Error('User not found');
+    }
+    const user = cliente.user;
+    delete user.password;
+    user.status = 1;
+    const userSaved = await this.userService.update(user.id, user);
+    if (!userSaved) {
+      throw new Error('User not updated');
+    }
     return await this.clienteRepository.save(cliente);
   }
 
@@ -27,15 +33,15 @@ export class ClienteService {
     return this.clienteRepository.find();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} cliente`;
   }
 
-  update(id: number, updateClienteDto: UpdateClienteDto) {
-    return `This action updates a #${id} cliente`;
+  update(id: string, updateClienteDto: UpdateClienteDto) {
+    return this.clienteRepository.update(id, updateClienteDto);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} cliente`;
   }
 }
