@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { inter } from "@/src/app/fonts";
 import "./globals.css";
-import NavBar from "../components/NavBar";
 import { AuthProvider } from "../context/authContext";
 import ToastProvider from "../context/ToastContext";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "GCID - Conectando quem precisa com quem tem a solução",
