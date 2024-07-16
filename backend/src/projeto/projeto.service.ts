@@ -40,6 +40,21 @@ export class ProjetoService {
       }
     }
 
+    if (createProjetoDto.institutoId != null) {
+      proj.instituto = await this.institutoService.findOne(
+        createProjetoDto.institutoId,
+      );
+    } else proj.instituto = null;
+
+    if (createProjetoDto.feedback != null) {
+      proj.dtFeedback = new Date();
+    } else {
+      proj.dtFeedback = null;
+    }
+
+    proj.nome = createProjetoDto.name;
+    proj.descricao = createProjetoDto.description;
+    proj.dtFim = null;
     proj.areas = areas;
     proj.cliente = cliente;
     proj.instituto = instituto;
