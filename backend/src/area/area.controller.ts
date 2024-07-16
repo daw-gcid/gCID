@@ -19,12 +19,12 @@ export class AreaController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.areaService.findOne(+id);
+    return this.areaService.findOneById(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAreaDto: UpdateAreaDto) {
-    return this.areaService.update(+id, updateAreaDto);
+    return this.areaService.update(id, updateAreaDto);
   }
 
   @Delete(':id')

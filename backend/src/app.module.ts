@@ -8,7 +8,6 @@ import { InstitutoModule } from './instituto/instituto.module';
 import { ProjetoModule } from './projeto/projeto.module';
 import { AreaModule } from './area/area.module';
 import { AuthModule } from './auth/auth.module';
-import { AreasConhecimentoModule } from './areas-conhecimento/areas-conhecimento.module';
 
 @Module({
   imports: [
@@ -35,7 +34,6 @@ import { AreasConhecimentoModule } from './areas-conhecimento/areas-conhecimento
     ProjetoModule,
     AreaModule,
     AuthModule,
-    AreasConhecimentoModule,
   ],
   controllers: [],
   providers: [],

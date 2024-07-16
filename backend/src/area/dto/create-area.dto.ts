@@ -6,4 +6,7 @@ export class CreateAreaDto {
 
   @IsString()
   nome: string;
+
+  @IsString()
+  descricao: string;
 }

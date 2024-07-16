@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -59,6 +60,7 @@ export class Projeto {
 
   // Relacionamento muitos-para-muitos com Area
   @ManyToMany(() => Area, (area) => area.projetos)
+  @JoinTable({ name: 'conhecimento_projeto' })
   areas: Area[];
 
   @Column({ name: 'projdtinicio' })

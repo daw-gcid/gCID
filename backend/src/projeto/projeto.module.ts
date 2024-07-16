@@ -9,11 +9,21 @@ import { InstitutoService } from 'src/instituto/instituto.service';
 import { Instituto } from 'src/instituto/entities/instituto.entity';
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
+import { Area } from 'src/area/entities/area.entity';
+import { AreaService } from 'src/area/area.service';
 
 @Module({
   controllers: [ProjetoController],
-  imports: [TypeOrmModule.forFeature([Projeto, Cliente, Instituto, User])],
-  providers: [ProjetoService, ClienteService, InstitutoService, UserService],
+  imports: [
+    TypeOrmModule.forFeature([Projeto, Cliente, Instituto, User, Area]),
+  ],
+  providers: [
+    ProjetoService,
+    ClienteService,
+    InstitutoService,
+    UserService,
+    AreaService,
+  ],
   exports: [ProjetoService],
 })
 export class ProjetoModule {}
