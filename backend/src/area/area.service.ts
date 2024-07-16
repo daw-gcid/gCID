@@ -29,8 +29,18 @@ export class AreaService {
     return await this.areaRepository.findOne({ where: { nome: name } });
   }
 
-  update(id: string, updateAreaDto: UpdateAreaDto) {
-    return `This action updates a #${id} area`;
+  async update(id: string, updateAreaDto: UpdateAreaDto) {
+    const area = await this.areaRepository.findOne({ where: { id: id } });
+
+    if (updateAreaDto.nome != null) {
+      area.nome = updateAreaDto.nome;
+    }
+
+    if (updateAreaDto.descricao != null) {
+      area.descricao = updateAreaDto.descricao;
+    }
+
+    return await this.areaRepository.save(area);
   }
 
   remove(id: number) {
