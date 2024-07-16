@@ -34,7 +34,7 @@ export class Talento {
   @Column({ length: 60, name: 'talemail' })
   email: string;
 
-  @Column({ length: 10, name: 'taltelefone' })
+  @Column({ length: 13, name: 'taltelefone' })
   telefone: string;
 
   @Column({ length: 30, name: 'talnacionalidade' })
@@ -61,7 +61,13 @@ export class Talento {
   @Column({ length: 255, name: 'talpathhistorico' })
   pathHistorico: string;
 
-  @Column({ type: 'decimal', precision: 5, scale: 2, name: 'talranking' })
+  @Column({
+    type: 'decimal',
+    precision: 5,
+    scale: 2,
+    name: 'talranking',
+    default: 5,
+  })
   ranking: number;
 
   @Column({ type: 'float', precision: 5, scale: 2, name: 'talcoeficiente' })
@@ -77,7 +83,7 @@ export class Talento {
   })
   experiencias: Experiencia[];
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { nullable: false, eager: true })
   @JoinColumn()
   user: User;
 }

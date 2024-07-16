@@ -1,27 +1,27 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsNotEmpty,
-  IsString,
   IsArray,
   IsEmail,
+  IsNotEmpty,
   IsOptional,
-  Validate,
+  IsString,
 } from 'class-validator';
 
-function IsRankingValid() {
-  return Validate(
-    (value: number) => {
-      return value >= 0 && value <= 5;
-    },
-    {
-      message: 'O ranking deve ser um número entre 0 e 5.',
-    },
-  );
-}
+// function IsRankingValid() {
+//   return Validate(
+//     (value: number) => {
+//       return value >= 0 && value <= 5;
+//     },
+//     {
+//       message: 'O ranking deve ser um número entre 0 e 5.',
+//     },
+//   );
+// }
 
 export class CreateTalentoDto {
   @IsString()
   @IsNotEmpty()
-  user_id: string;
+  userId: string;
 
   @IsString()
   @IsNotEmpty()
@@ -36,6 +36,7 @@ export class CreateTalentoDto {
   curso: string;
 
   @IsNotEmpty()
+  //exemplo de dtInicio em datetime: 2021-10-01T00:00:00.000Z
   dtInicio: Date;
 
   @IsNotEmpty()
@@ -71,17 +72,11 @@ export class CreateTalentoDto {
   @IsString()
   linkedin?: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @ApiProperty()
   pathMatricula: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @ApiProperty()
   pathHistorico: string;
-
-  @IsNotEmpty()
-  @IsRankingValid()
-  ranking: number;
 
   @IsNotEmpty()
   coeficiente: number;
