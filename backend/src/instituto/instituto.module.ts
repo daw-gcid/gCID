@@ -10,5 +10,6 @@ import { UserService } from 'src/user/user.service';
   controllers: [InstitutoController],
   imports: [TypeOrmModule.forFeature([Instituto, User])],
   providers: [InstitutoService, UserService],
+  exports: [InstitutoService],
 })
 export class InstitutoModule {}

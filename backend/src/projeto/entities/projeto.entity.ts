@@ -11,6 +11,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+export enum projetoStatus {
+  naoIniciado = 0,
+  emAndamento = 1,
+  concluido = 2,
+}
+
 @Entity()
 export class Projeto {
   @PrimaryGeneratedColumn('uuid')
@@ -23,7 +29,7 @@ export class Projeto {
   descricao: string;
 
   @Column({ name: 'projstatus', type: 'int', default: 0 })
-  status: number;
+  status: projetoStatus;
 
   @Column({ name: 'projdtfim' })
   dtFim: Date;
