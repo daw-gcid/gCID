@@ -29,12 +29,12 @@ export class ClienteService {
     return await this.clienteRepository.save(cliente);
   }
 
-  findAll() {
-    return this.clienteRepository.find();
+  async findAll() {
+    return await this.clienteRepository.find();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} cliente`;
+  async findOne(id: string) {
+    return await this.clienteRepository.findOne({ where: { id: id } });
   }
 
   update(id: string, updateClienteDto: UpdateClienteDto) {

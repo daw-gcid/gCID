@@ -32,13 +32,13 @@ export class Projeto {
   @Column({ name: 'projstatus', type: 'int', default: 0 })
   status: projetoStatus;
 
-  @Column({ name: 'projdtfim' })
+  @Column({ name: 'projdtfim', nullable: true })
   dtFim: Date;
 
-  @CreateDateColumn({ name: 'projdtcadastro' })
+  @CreateDateColumn({ name: 'projdtcadastro', nullable: true })
   dtCadastro: Date;
 
-  @UpdateDateColumn({ name: 'projdtatualizacao' })
+  @UpdateDateColumn({ name: 'projdtatualizacao', nullable: true })
   dtAtualizacao: Date;
 
   @Column({ name: 'projfeedback', nullable: true })
@@ -63,6 +63,6 @@ export class Projeto {
   @JoinTable({ name: 'conhecimento_projeto' })
   areas: Area[];
 
-  @Column({ name: 'projdtinicio' })
+  @Column({ name: 'projdtinicio', nullable: true })
   dtInicio: Date;
 }

@@ -25,6 +25,12 @@ export class ProjetoService {
 
     const areas = [];
     const proj = this.projetoRepository.create(createProjetoDto);
+    const cliente = await this.clienteService.findOne(
+      createProjetoDto.clienteId,
+    );
+    const instituto = await this.institutoService.findOne(
+      createProjetoDto.institutoId,
+    );
 
     for (const areaName of createProjetoDto.areasConhecimento) {
       const achouArea = await this.areaService.findOneByName(areaName);
@@ -34,7 +40,24 @@ export class ProjetoService {
       }
     }
 
+    if (createProjetoDto.institutoId != null) {
+      proj.instituto = await this.institutoService.findOne(
+        createProjetoDto.institutoId,
+      );
+    } else proj.instituto = null;
+
+    if (createProjetoDto.feedback != null) {
+      proj.dtFeedback = new Date();
+    } else {
+      proj.dtFeedback = null;
+    }
+
+    proj.nome = createProjetoDto.name;
+    proj.descricao = createProjetoDto.description;
+    proj.dtFim = null;
     proj.areas = areas;
+    proj.cliente = cliente;
+    proj.instituto = instituto;
 
     return await this.projetoRepository.save(proj);
   }
@@ -54,7 +77,7 @@ export class ProjetoService {
   }
 
   async findOne(id: string) {
-    return `This action returns a #${id} projeto`;
+    return await this.projetoRepository.findOne({ where: { id: id } });
   }
 
   update(id: string, updateProjetoDto: UpdateProjetoDto) {
