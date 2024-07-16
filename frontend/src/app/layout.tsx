@@ -3,6 +3,7 @@ import { inter } from "@/src/app/fonts";
 import "./globals.css";
 import { AuthProvider } from "../context/authContext";
 import ToastProvider from "../context/ToastContext";
+import NavBar from "../components/NavBar";
 
 // const inter = Inter({ subsets: ["latin"] });
 

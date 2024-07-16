@@ -32,11 +32,31 @@ import {
 import { Input } from "@/src/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/src/components/ui/sheet"
 import { zen_dots } from "../fonts"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { AuthContext } from "@/src/context/authContext"
-export default function Dashboard() {
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+  } from "@/src/components/ui/dialog";
+import Label from "@/src/components/ui/label";
 
+
+export default function Dashboard() {
 	const {logout, user} = useContext(AuthContext);
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+	const handleAddProject = () => {
+	  setIsDialogOpen(true);
+	};
+  
+	const handleDialogClose = () => {
+	  setIsDialogOpen(false);
+	};
 
 	if(!user){
 		return null
@@ -234,11 +254,82 @@ export default function Dashboard() {
 							<p className="text-sm text-muted-foreground">
 								Cadastre sua demanda em nosso sistema, nós cuidamos do resto.
 							</p>
-							<Button className="mt-4">Adicionar Projeto</Button>
+							<Dialog>
+								<DialogTrigger asChild>
+									<Button variant="outline">Adicionar Projeto</Button>
+								</DialogTrigger>
+								<DialogContent className="max-w-[600px] overflow-y-auto">
+									<DialogHeader>
+									<DialogTitle>Adicionar Projeto</DialogTitle>
+									<DialogDescription>
+										Cadastre seu projeto aqui.
+									</DialogDescription>
+									</DialogHeader>
+									<div className="grid gap-4 py-4">
+										<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+											<div className="flex flex-col">
+											<Label htmlFor="nome-projeto" className="mb-1">
+												Nome do Projeto
+											</Label>
+											<Input
+												id="nome-projeto"
+												defaultValue="Ex. Plataforma Educacional"
+												className="py-2 px-3 rounded-md border border-gray-300"
+											/>
+											</div>
+											<div className="flex flex-col">
+											<Label htmlFor="descricao" className="mb-1">
+												Descrição
+											</Label>
+											<Input
+												id="descricao"
+												defaultValue="Descrição..."
+												className="py-2 px-3 rounded-md border border-gray-300"
+											/>
+											</div>
+											<div className="flex flex-col">
+											<Label htmlFor="empresa" className="mb-1">
+												Empresa
+											</Label>
+											<Input
+												id="empresa"
+												defaultValue="Company S.A"
+												className="py-2 px-3 rounded-md border border-gray-300"
+											/>
+											</div>
+											<div className="flex flex-col">
+											<Label htmlFor="data-inicio" className="mb-1">
+												Data de Início
+											</Label>
+											<Input
+												id="data-inicio"
+												defaultValue="19/09/2022"
+												className="py-2 px-3 rounded-md border border-gray-300"
+											/>
+											</div>
+											<div className="flex flex-col">
+											<Label htmlFor="area-conhecimento" className="mb-1">
+												Área de Conhecimento
+											</Label>
+											<Input
+												id="area-conhecimento"
+												defaultValue="19/09/2022"
+												className="py-2 px-3 rounded-md border border-gray-300"
+											/>
+											</div>
+										</div>
+										</div>
+									<DialogFooter>
+									<Button type="submit">Salvar Projeto</Button>
+									</DialogFooter>
+								</DialogContent>
+							</Dialog>
 						</div>
 					</div>
 				</main>
 			</div>
+			
 		</div>
 	)
 }
+
