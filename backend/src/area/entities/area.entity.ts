@@ -6,8 +6,11 @@ export class Area {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 60, name: 'aranome' })
+  @Column({ length: 60, name: 'areanome' })
   nome: string;
+
+  @Column()
+  descricao: string;
 
   // Relacionamento muitos-para-muitos com Projeto
   @ManyToMany(() => Projeto, (projeto) => projeto.areas)

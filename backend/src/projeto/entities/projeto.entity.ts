@@ -5,11 +5,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+export enum projetoStatus {
+  naoIniciado = 0,
+  emAndamento = 1,
+  concluido = 2,
+}
 
 @Entity()
 export class Projeto {
@@ -23,7 +30,7 @@ export class Projeto {
   descricao: string;
 
   @Column({ name: 'projstatus', type: 'int', default: 0 })
-  status: number;
+  status: projetoStatus;
 
   @Column({ name: 'projdtfim' })
   dtFim: Date;
@@ -53,6 +60,7 @@ export class Projeto {
 
   // Relacionamento muitos-para-muitos com Area
   @ManyToMany(() => Area, (area) => area.projetos)
+  @JoinTable({ name: 'conhecimento_projeto' })
   areas: Area[];
 
   @Column({ name: 'projdtinicio' })

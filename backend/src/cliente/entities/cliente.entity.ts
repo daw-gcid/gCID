@@ -12,7 +12,7 @@ import { Projeto } from 'src/projeto/entities/projeto.entity';
 @Entity()
 export class Cliente {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({ nullable: true, length: 14 })
   cnpj: string;
