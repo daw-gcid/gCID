@@ -1,15 +1,15 @@
-import { IsString, IsEmail, Validate } from 'class-validator';
+import { IsString, IsEmail } from 'class-validator';
 
-function IsRankingValid() {
-  return Validate(
-    (value: number) => {
-      return value >= 0 && value <= 5;
-    },
-    {
-      message: 'O ranking deve ser um número entre 0 e 5.',
-    },
-  );
-}
+// function IsRankingValid() {
+//   return Validate(
+//     (value: number) => {
+//       return value >= 0 && value <= 5;
+//     },
+//     {
+//       message: 'O ranking deve ser um número entre 0 e 5.',
+//     },
+//   );
+// }
 
 export class CreateInstitutoDto {
   @IsString()
@@ -34,10 +34,7 @@ export class CreateInstitutoDto {
   @IsEmail()
   email: string;
 
-  descricao: string;
-
-  @IsRankingValid()
-  ranking: number;
+  // descricao: string;
 
   @IsString()
   userId: string;

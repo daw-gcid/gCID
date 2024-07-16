@@ -17,7 +17,7 @@ const LoginPage: React.FC<{ changeToSignUp: () => void }> = ({ changeToSignUp })
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="flex min-h-full flex-1 flex-col justify-center mt-32 px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <div className='flex justify-center'>
             <Logo />
@@ -29,7 +29,7 @@ const LoginPage: React.FC<{ changeToSignUp: () => void }> = ({ changeToSignUp })
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleLogin}>
-            <RadioButtonGroup />
+            {/* <RadioButtonGroup /> */}
             <div>
               <label htmlFor="identifier" className="block text-sm font-medium leading-6 text-gray-900">
                 Email ou Nome de Usuário

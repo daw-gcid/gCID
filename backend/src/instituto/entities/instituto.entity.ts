@@ -1,5 +1,13 @@
 import { Projeto } from 'src/projeto/entities/projeto.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Instituto {
@@ -21,20 +29,30 @@ export class Instituto {
   @Column({ length: 60, name: 'instestado' })
   estado: string;
 
-  @Column({ length: 10, name: 'insttelefone' })
+  @Column({ length: 13, name: 'insttelefone' })
   telefone: string;
 
   @Column({ length: 60, name: 'instemail' })
   email: string;
 
-  @Column({ length: 255, name: 'instdescricao' })
+  @Column({ length: 255, name: 'instdescricao', default: '' })
   descricao: string;
 
-  @Column({ type: 'decimal', precision: 3, scale: 2, name: 'intranking' })
+  @Column({
+    type: 'decimal',
+    precision: 3,
+    scale: 2,
+    name: 'intranking',
+    default: 5.0,
+  })
   ranking: number;
 
   @OneToMany(() => Projeto, (projeto) => projeto.instituto, {
     nullable: true,
   })
   projetos: Projeto[];
+
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: User;
 }

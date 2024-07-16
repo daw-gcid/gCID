@@ -5,7 +5,6 @@ import { AuthContext } from "@/src/context/authContext";
 import { api } from "@/src/api/axios";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
 
 
 const SigninClientPage: React.FC = () => {
@@ -13,8 +12,6 @@ const SigninClientPage: React.FC = () => {
   const [nome, setnome] = useState("");
   const [telefone, settelefone] = useState("");
   const [endereco, setendereco] = useState("");
-  const [userId, setUserId] = useState("");
-  const [email, setEmail] = useState("");
 
   const { user } = useContext(AuthContext);
 	if (!user) {

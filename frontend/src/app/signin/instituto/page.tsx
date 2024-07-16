@@ -1,14 +1,49 @@
 "use client";
 import HomeLogo from "@/src/components/HomeLogo";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "@/src/context/authContext";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { api } from "@/src/api/axios";
 
- function Page() {
+ function SigninInstitutoPage() {
+
+  const [nome, setName] = useState("");
+  const [cnpj, setCnpj] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [estado, setEstado] = useState("");
+  const [telefone, setTelefone] = useState("");
 
   const { user } = useContext(AuthContext);
   if(!user) {
     return null;
   }
+
+  const handleRegisterInstituto = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const email = user.email;
+    const userId = user.id;
+    const institutoDto = {
+      nome,
+      cnpj,
+      endereco,
+      cidade,
+      estado,
+      telefone,
+      userId,
+      email,
+    };
+    try {
+      const response = await api.post("/instituto", institutoDto);
+      toast.success("Instituto cadastrado com sucesso!");
+      console.log(response);
+      window.location.href = "/instituto";
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error((err.response?.data as { message: string })?.message);
+    }
+  };
 
   
   return (
@@ -24,7 +59,7 @@ import { AuthContext } from "@/src/context/authContext";
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={handleRegisterInstituto}>
 
 
             <div>
@@ -38,6 +73,8 @@ import { AuthContext } from "@/src/context/authContext";
                   type="text"
                   placeholder="Digite o nome do seu Instituto"
                   required
+                  value={nome}
+                  onChange={(e) => setName(e.target.value)}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-custom-blue sm:text-sm sm:leading-6"
                 />
               </div>
@@ -55,6 +92,8 @@ import { AuthContext } from "@/src/context/authContext";
                   type="text"
                   placeholder="Digite o CNPJ do seu Instituto"
                   required
+                  value={cnpj}
+                  onChange={(e) => setCnpj(e.target.value)}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-custom-blue sm:text-sm sm:leading-6"
                 />
               </div>
@@ -71,6 +110,8 @@ import { AuthContext } from "@/src/context/authContext";
                   type="text"
                   placeholder="Ex.: Rua X, Nº 00, Bairro Y"
                   required
+                  value={endereco}
+                  onChange={(e) => setEndereco(e.target.value)}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-custom-blue sm:text-sm sm:leading-6"
                 />
               </div>
@@ -87,6 +128,8 @@ import { AuthContext } from "@/src/context/authContext";
                   type="text"
                   placeholder="Digite a cidade onde está localizado o Instituto"
                   required
+                  value={cidade}
+                  onChange={(e) => setCidade(e.target.value)}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-custom-blue sm:text-sm sm:leading-6"
                 />
               </div>
@@ -103,6 +146,8 @@ import { AuthContext } from "@/src/context/authContext";
                   type="text"
                   placeholder="Digite o estado onde está localizado o Instituto"
                   required
+                  value={estado}
+                  onChange={(e) => setEstado(e.target.value)}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-custom-blue sm:text-sm sm:leading-6"
                 />
               </div>
@@ -119,6 +164,8 @@ import { AuthContext } from "@/src/context/authContext";
                   type="text"
                   placeholder="Ex.: (00) 91234-5678"
                   required
+                  value={telefone}
+                  onChange={(e) => setTelefone(e.target.value)}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-custom-blue sm:text-sm sm:leading-6"
                 />
               </div>
@@ -138,4 +185,4 @@ import { AuthContext } from "@/src/context/authContext";
     </>
   );
 }
-export default Page;
+export default SigninInstitutoPage;
