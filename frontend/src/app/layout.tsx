@@ -3,7 +3,6 @@ import { inter } from "@/src/app/fonts";
 import "./globals.css";
 import { AuthProvider } from "../context/authContext";
 import ToastProvider from "../context/ToastContext";
-import NavBar from "../components/NavBar";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +22,6 @@ export default function RootLayout({
       <html lang="pt-br">
         <body className={inter.className}>
           <ToastProvider>
-          <NavBar />
             {children }
           </ToastProvider>
         </body>
