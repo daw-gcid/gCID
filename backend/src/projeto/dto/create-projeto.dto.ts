@@ -1,12 +1,12 @@
-import { IsArray, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsNumber, IsString } from 'class-validator';
 import { projetoStatus } from '../entities/projeto.entity';
 
 export class CreateProjetoDto {
   @IsString()
-  name: string;
+  nome: string;
 
   @IsString()
-  description: string;
+  descricao: string;
 
   @IsNumber()
   status: projetoStatus;
@@ -19,6 +19,9 @@ export class CreateProjetoDto {
 
   @IsString()
   institutoId: string;
+
+  @IsBoolean()
+  publico: boolean;
 
   @IsArray()
   areasConhecimento: string[];

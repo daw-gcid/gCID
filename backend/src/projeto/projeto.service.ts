@@ -1,12 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateProjetoDto } from './dto/create-projeto.dto';
-import { UpdateProjetoDto } from './dto/update-projeto.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Projeto } from './entities/projeto.entity';
 import { Repository } from 'typeorm';
-import { ClienteService } from 'src/cliente/cliente.service';
-import { InstitutoService } from 'src/instituto/instituto.service';
 import { AreaService } from 'src/area/area.service';
+import { ClienteService } from 'src/cliente/cliente.service';
+import { CreateProjetoDto } from './dto/create-projeto.dto';
+import { UpdateProjetoDto } from './dto/update-projeto.dto';
+import { InstitutoService } from 'src/instituto/instituto.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ProjetoService {
@@ -23,8 +23,10 @@ export class ProjetoService {
       return new BadRequestException('O id de cliente não pode ser vazio');
     }
 
-    const areas = [];
     const proj = this.projetoRepository.create(createProjetoDto);
+
+    const areas = [];
+
     const cliente = await this.clienteService.findOne(
       createProjetoDto.clienteId,
     );
@@ -52,14 +54,13 @@ export class ProjetoService {
       proj.dtFeedback = null;
     }
 
-    proj.nome = createProjetoDto.name;
-    proj.descricao = createProjetoDto.description;
-    proj.dtFim = null;
     proj.areas = areas;
     proj.cliente = cliente;
     proj.instituto = instituto;
 
-    return await this.projetoRepository.save(proj);
+    await this.projetoRepository.save(proj);
+
+    return proj.id;
   }
 
   findAllClienteProjects(clientId: string) {
@@ -80,11 +81,63 @@ export class ProjetoService {
     return await this.projetoRepository.findOne({ where: { id: id } });
   }
 
-  update(id: string, updateProjetoDto: UpdateProjetoDto) {
-    return `This action updates a #${id} projeto`;
+  async update(id: string, updateProjetoDto: UpdateProjetoDto) {
+    const proj = await this.projetoRepository.findOne({
+      where: { id: id },
+      relations: ['areas', 'cliente', 'instituto'],
+    });
+    if (!proj) {
+      throw new BadRequestException('Projeto não encontrado');
+    }
+
+    // Verifica se o clienteId foi enviado no DTO e remove-o
+    if (updateProjetoDto.clienteId) {
+      delete updateProjetoDto.clienteId;
+    }
+
+    if (updateProjetoDto.institutoId) {
+      const instituto = await this.institutoService.findOne(
+        updateProjetoDto.institutoId,
+      );
+      proj.instituto = instituto;
+    } else {
+      proj.instituto = null;
+    }
+
+    if (updateProjetoDto.areasConhecimento) {
+      const areas = [];
+      for (const areaName of updateProjetoDto.areasConhecimento) {
+        const achouArea = await this.areaService.findOneByName(areaName);
+        if (achouArea) {
+          areas.push(achouArea);
+        }
+      }
+      proj.areas = areas;
+    }
+
+    if (updateProjetoDto.feedback) {
+      proj.dtFeedback = new Date();
+    } else {
+      proj.dtFeedback = null;
+    }
+
+    Object.assign(proj, updateProjetoDto);
+
+    await this.projetoRepository.save(proj);
+
+    return proj;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} projeto`;
+  async remove(id: string) {
+    const proj = await this.projetoRepository.findOne({
+      where: { id: id },
+      relations: ['areas', 'cliente', 'instituto'],
+    });
+
+    if (!proj) {
+      throw new BadRequestException('Projeto não encontrado');
+    }
+
+    return await this.projetoRepository.delete(id);
   }
 }
