@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAreaDto } from './dto/create-area.dto';
 import { UpdateAreaDto } from './dto/update-area.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,7 +14,8 @@ export class AreaService {
 
   async create(createAreaDto: CreateAreaDto) {
     const area = this.areaRepository.create(createAreaDto);
-    return await this.areaRepository.save(area);
+    await this.areaRepository.save(area);
+    return area.id;
   }
 
   async findAll() {
@@ -22,15 +23,27 @@ export class AreaService {
   }
 
   async findOneById(id: string) {
-    return await this.areaRepository.findOne({ where: { id: id } });
+    const area = await this.areaRepository.findOne({ where: { id: id } });
+    if (!area) {
+      throw new NotFoundException(`Area de id ${id} não encontrada`);
+    }
+    return area;
   }
 
   async findOneByName(name: string) {
-    return await this.areaRepository.findOne({ where: { nome: name } });
+    const area = await this.areaRepository.findOne({ where: { nome: name } });
+    if (!area) {
+      throw new NotFoundException(`Area de nome ${name} não encontrada`);
+    }
+    return area;
   }
 
   async update(id: string, updateAreaDto: UpdateAreaDto) {
-    const area = await this.areaRepository.findOne({ where: { id: id } });
+    const area = await this.findOneById(id);
+
+    if (!area) {
+      throw new NotFoundException(`Area de id ${id} não encontrada`);
+    }
 
     if (updateAreaDto.nome != null) {
       area.nome = updateAreaDto.nome;
@@ -40,10 +53,16 @@ export class AreaService {
       area.descricao = updateAreaDto.descricao;
     }
 
-    return await this.areaRepository.save(area);
+    await this.areaRepository.save(area);
+    return area.id;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} area`;
+  async remove(id: string) {
+    const area = await this.findOneById(id);
+    if (!area) {
+      throw new NotFoundException(`Area de id ${id} não encontrada`);
+    }
+
+    return await this.areaRepository.delete(area);
   }
 }

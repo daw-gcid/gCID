@@ -13,9 +13,10 @@ import {
 } from 'typeorm';
 
 export enum projetoStatus {
-  naoIniciado = 0,
-  emAndamento = 1,
-  concluido = 2,
+  naoIniciado,
+  emAndamento,
+  concluido,
+  cancelado,
 }
 
 @Entity()
@@ -46,6 +47,9 @@ export class Projeto {
 
   @Column({ name: 'projdtfeedback', nullable: true })
   dtFeedback: Date;
+
+  @Column()
+  publico: boolean;
 
   @ManyToOne(() => Cliente, (cliente) => cliente.projetos, {
     nullable: false,

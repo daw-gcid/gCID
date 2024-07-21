@@ -29,6 +29,6 @@ export class AreaController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.areaService.remove(+id);
+    return this.areaService.remove(id);
   }
 }
