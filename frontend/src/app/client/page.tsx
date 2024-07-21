@@ -13,6 +13,7 @@ import {
     Search,
     ShoppingCart,
     Users,
+    CirclePlus,
 } from "lucide-react";
 import GLogo from "@/src/components/gLogo";
 import { Badge } from "@/src/components/ui/badge";
@@ -35,8 +36,12 @@ import {
 import { Input } from "@/src/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/src/components/ui/sheet";
 import { zen_dots } from "../fonts";
-import { use, useContext, useEffect, useState } from "react";
+import { use, useContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "@/src/context/authContext";
+
+import { Checkbox, CheckboxIndicator } from "@radix-ui/react-checkbox";
+import { Label } from "@/src/components/ui/label";
+import { Textarea } from "@/src/components/ui/textarea";
 
 import {
     Dialog,
@@ -46,7 +51,8 @@ import {
     DialogTitle,
     DialogTrigger,
     DialogClose,
-} from "@/components/ui/dialog";
+} from "@/src/components/ui/dialog";
+
 
 export default function Dashboard() {
     const { logout, user } = useContext(AuthContext);
@@ -76,6 +82,14 @@ export default function Dashboard() {
         dtInicio: Date;
     }
 
+    const dialogTriggerRef = useRef<HTMLButtonElement>(null);
+
+    const openDialog = () => {
+        if (dialogTriggerRef.current) {
+            dialogTriggerRef.current.click();
+        }
+    };
+
     if (!user) {
         return null;
     }
@@ -89,9 +103,11 @@ export default function Dashboard() {
         // Falta a parte de salvar os dados no bd
     };
 
+
+
     return (
-        <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-            <div className="hidden border-r bg-muted/40 md:block">
+        <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] ">
+            <div className="hidden border-r bg-muted/40 md:block bg-green-400">
                 <div className="flex h-full max-h-screen flex-col gap-2">
                     <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                         <Link
@@ -157,8 +173,8 @@ export default function Dashboard() {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                                <Button size="sm" className="w-full">
-                                    Upgrade
+                                <Button size="sm" className="w-full bg-custom-green text-black font-bold hover:text-white">
+                                    SEJA PRO
                                 </Button>
                             </CardContent>
                         </Card>
@@ -236,8 +252,8 @@ export default function Dashboard() {
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent>
-                                        <Button size="sm" className="w-full">
-                                            Upgrade
+                                        <Button size="sm" className="w-full bg-custom-green text-black font-bold hover:text-white">
+                                            SEJA PRO
                                         </Button>
                                     </CardContent>
                                 </Card>
@@ -276,167 +292,177 @@ export default function Dashboard() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </header>
-                <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 ">
                     <div className="flex items-center">
                         <h1 className="text-lg font-semibold md:text-2xl">Projetos</h1>
+                        <Button
+                            onClick={openDialog}
+                            size="icon"
+                            variant="secondary"
+                            className="rounded-full text-custom-green bg-transparent"
+                        >
+                            <CirclePlus className="w-6 h-6" />
+                        </Button>
+
                     </div>
-                    {/* Essa parte aqui serve para verificar se na lista existe algo ou não, da para alterar pela tipo de estrutura de dados que vai ser usado. */}
-                    {/*projects.length > 0*/ 1 != 1 ? (
-                        <div className="grid grid-cols-1 gap-4">
-                            {projects.map((project: Project, index) => (
-
-                                <Card key={index}>
-                                    <CardHeader>
-                                        <CardTitle>{project?.nome}</CardTitle>
-                                        <CardDescription>{project?.descricao}</CardDescription>
-                                        {/*Isso aqui ta responsivo, caso queira colcoar mais dados, verifiquei no meu bando de dados e os dados relevantes que vamos pedir no cadastro é o nome e a descrição,mas podem ser definidos outros*/}
-                                    </CardHeader>
-                                </Card>
-                            ))}
-
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <Button className="mt-4">Adicionar Projeto</Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-[825px] sm:max-h-[720px]">
-                                    <DialogHeader>
-                                        <DialogTitle>Cadastre seu projeto</DialogTitle>
-                                        <DialogDescription>
-                                            Cadastre as informações do seu projeto aqui.
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <form onSubmit={handleSubmit} className="grid gap-4 py-4">
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <label htmlFor="name" className="text-right">
-                                                Nome
-                                            </label>
-                                            <Input id="name" name="name" className="col-span-3" />
-                                        </div>
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <label htmlFor="description" className="text-right">
-                                                Descrição
-                                            </label>
-                                            <Input
-                                                id="description"
-                                                name="description"
-                                                className="col-span-3"
-                                            />
-                                            {/*Isso aqui tmb esta responsivo, caso precise colocar mais dados, é só copiar e coloar a div de cima e trocar as informações no label e no input*/}
-                                        </div>
-                                        <label htmlFor="status" className="text-right">
-                                            Status
-                                        </label>
-                                        <Input
-                                            id="status"
-                                            name="status"
-                                            className="col-span-3"
-                                        />
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <label htmlFor="feedback" className="text-right">
-                                                Feedback
-                                            </label>
-                                            <Input
-                                                id="feedback"
-                                                name="feedback"
-                                                className="col-span-3"
-                                            />
-                                        </div>
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <label htmlFor="clienteId" className="text-right">
-                                                Cliente ID
-                                            </label>
-                                            <Input
-                                                id="clienteId"
-                                                name="clienteId"
-                                                className="col-span-3"
-                                            />
-                                        </div>
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <label htmlFor="institutoId" className="text-right">
-                                                Instituto ID
-                                            </label>
-                                            <Input
-                                                id="institutoId"
-                                                name="institutoId"
-                                                className="col-span-3"
-                                            />
-                                        </div>
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <label htmlFor="areasConhecimento" className="text-right">
-                                                Áreas de Conhecimento
-                                            </label>
-                                            <Input
-                                                id="areasConhecimento"
-                                                name="areasConhecimento"
-                                                className="col-span-3"
-                                            />
-                                        </div>
-
-                                        <div className="flex justify-end gap-2">
-                                            <DialogClose>
-                                                <Button type="button" variant="secondary">
-                                                    Fechar
-                                                </Button>
-                                                <Button type="submit">Salvar</Button>
-                                            </DialogClose>
-                                        </div>
-                                    </form>
-                                </DialogContent>
-                            </Dialog>
-                        </div>
-                    ) : (
-                        //Apartir daqui é quando não tem projetos
-                        <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
-                            <div className="flex flex-col items-center gap-1 text-center">
-                                <h3 className="text-2xl font-bold tracking-tight">
-                                    Você não tem projetos
-                                </h3>
-                                <p className="text-sm text-muted-foreground">
-                                    Cadastre sua demanda em nosso sistema, nós cuidamos do resto.
-                                </p>
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button className="mt-4">Adicionar Projeto</Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="sm:max-w-[425px]">
-                                        <DialogHeader>
-                                            <DialogTitle>Cadastre seu projeto</DialogTitle>
-                                            <DialogDescription>
-                                                Cadastre as informações do seu projeto aqui.
-                                            </DialogDescription>
-                                        </DialogHeader>
-                                        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <label htmlFor="name" className="text-right">
-                                                    Nome
-                                                </label>
-                                                <Input id="name" name="name" className="col-span-3" />
-                                            </div>
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <label htmlFor="description" className="text-right">
-                                                    Descrição
-                                                </label>
-                                                <Input
-                                                    id="description"
-                                                    name="description"
-                                                    className="col-span-3"
-                                                />
-                                            </div>
-                                            {/*É a mesma situação lá de cima, ta responsivel, pode colocoar informações como quiser*/}
-                                            <div className="flex justify-end gap-2">
-                                                <DialogClose>
-                                                    <Button type="button" variant="secondary">
-                                                        Fechar
+                    <div className="flex flex-1">
+                        {/* Essa parte aqui serve para verificar se na lista existe algo ou não, da para alterar pela tipo de estrutura de dados que vai ser usado. */}
+                        {/*projects.length > 0*/ 1 != 1 ? (
+                            <div className="flex-1 grid grid-cols-1 gap-4 ">
+                                {projects.map((project: Project, index) => (
+                                    <Card key={index}>
+                                        <CardHeader>
+                                            <CardTitle>{project?.nome}</CardTitle>
+                                            <CardDescription>{project?.descricao}</CardDescription>
+                                            {/*Isso aqui ta responsivo, caso queira colcoar mais dados, verifiquei no meu bando de dados e os dados relevantes que vamos pedir no cadastro é o nome e a descrição,mas podem ser definidos outros*/}
+                                        </CardHeader>
+                                    </Card>
+                                ))}
+                                <div className="fixed bottom-0 right-0 mb-10 mr-10">
+                                    <Button onClick={openDialog} className="bg-custom-green text-black font-bold hover:text-white">Adicionar Projeto</Button>
+                                </div>
+                                <div className="fixed bottom-0 right-0 mb-10 mr-10">
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button ref={dialogTriggerRef} className="sr-only">Adicionar Projeto</Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="sm:max-w-lg sm:max-h-[80vh] overflow-y-auto p-6 rounded-lg bg-white shadow-lg">
+                                            <DialogHeader>
+                                                <DialogTitle className="text-2xl font-semibold">Cadastre seu projeto</DialogTitle>
+                                                <DialogDescription className="text-base text-muted-foreground">
+                                                    Cadastre as informações do seu projeto aqui.
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <form onSubmit={handleSubmit} className="grid gap-6 py-4">
+                                                <div className="grid gap-4">
+                                                    <label htmlFor="name" className="block text-lg font-medium">
+                                                        Nome do projeto
+                                                    </label>
+                                                    <Input
+                                                        id="name"
+                                                        name="name"
+                                                        className="border  rounded-md shadow-sm w-full px-3 py-2 focus:border-custom-green focus:ring-custom-green"
+                                                    />
+                                                </div>
+                                                <div className="grid gap-4">
+                                                    <Label htmlFor="description" className="block text-lg font-medium">Descrição do projeto</Label>
+                                                    <Textarea placeholder="Escreva sua descrição." id="description" className="border rounded-md shadow-sm w-full px-3 py-2 focus:border-custom-green focus:ring-custom-green" />
+                                                </div>
+                                                <div className="hidden grid-cols-4 items-center gap-4">
+                                                    <label htmlFor="clienteId" className="text-lg font-medium text-right">
+                                                        Cliente ID
+                                                    </label>
+                                                    <Input id="clienteId" name="clienteId" className="col-span-3 border rounded-md shadow-sm px-3 py-2" />
+                                                </div>
+                                                <div className="hidden grid-cols-4 items-center gap-4">
+                                                    <label htmlFor="areasConhecimento" className="text-lg font-medium text-right">
+                                                        Áreas de Conhecimento
+                                                    </label>
+                                                    <Input id="areasConhecimento" name="areasConhecimento" className="col-span-3 border rounded-md shadow-sm px-3 py-2" />
+                                                </div>
+                                                <div className="flex items-center space-x-3">
+                                                    <input
+                                                        id="privado"
+                                                        type="checkbox"
+                                                        className="w-5 h-5 border-gray-300 rounded checked:bg-custom-green checked:border-transparent focus:ring-custom-green"
+                                                    />
+                                                    <Label htmlFor="privado" className="text-base" title="As informações só poderão ser acessadas com sua permissão">
+                                                        Privado
+                                                    </Label>
+                                                </div>
+                                                <div className="flex justify-end gap-3 mt-4">
+                                                    <DialogClose>
+                                                        <Button type="button" variant="secondary" className="py-2 px-4 text-base ">
+                                                            Fechar
+                                                        </Button>
+                                                    </DialogClose>
+                                                    <Button type="submit" className="py-2 px-4 text-base bg-custom-green text-black hover:text-white">
+                                                        Salvar
                                                     </Button>
-                                                    <Button type="submit">Salvar</Button>
-                                                </DialogClose>
-                                            </div>
-                                        </form>
-                                    </DialogContent>
-                                </Dialog>
+                                                </div>
+                                            </form>
+                                        </DialogContent>
+                                    </Dialog>
+                                </div>
+
                             </div>
-                        </div>
-                    )}
+
+                        ) : (
+                            //Apartir daqui é quando não tem projetos
+                            <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+                                <div className="flex flex-col items-center gap-1 text-center">
+                                    <h3 className="text-2xl font-bold tracking-tight">
+                                        Você não tem projetos
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground">
+                                        Cadastre sua demanda em nosso sistema, nós cuidamos do resto.
+                                    </p>
+                                    <Button onClick={openDialog} className="bg-custom-green text-black font-bold hover:text-white">Adicionar Projeto</Button>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button ref={dialogTriggerRef} className="sr-only">Adicionar Projeto</Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="sm:max-w-lg sm:max-h-[80vh] overflow-y-auto p-6 rounded-lg bg-white shadow-lg">
+                                            <DialogHeader>
+                                                <DialogTitle className="text-2xl font-semibold">Cadastre seu projeto</DialogTitle>
+                                                <DialogDescription className="text-base text-muted-foreground">
+                                                    Cadastre as informações do seu projeto aqui.
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <form onSubmit={handleSubmit} className="grid gap-6 py-4">
+                                                <div className="grid gap-4">
+                                                    <label htmlFor="name" className="block text-lg font-medium">
+                                                        Nome do projeto
+                                                    </label>
+                                                    <Input
+                                                        id="name"
+                                                        name="name"
+                                                        className="border  rounded-md shadow-sm w-full px-3 py-2 focus:border-custom-green focus:ring-custom-green"
+                                                    />
+                                                </div>
+                                                <div className="grid gap-4">
+                                                    <Label htmlFor="description" className="block text-lg font-medium">Descrição do projeto</Label>
+                                                    <Textarea placeholder="Escreva sua descrição." id="description" className="border rounded-md shadow-sm w-full px-3 py-2 focus:border-custom-green focus:ring-custom-green" />
+                                                </div>
+                                                <div className="hidden grid-cols-4 items-center gap-4">
+                                                    <label htmlFor="clienteId" className="text-lg font-medium text-right">
+                                                        Cliente ID
+                                                    </label>
+                                                    <Input id="clienteId" name="clienteId" className="col-span-3 border rounded-md shadow-sm px-3 py-2" />
+                                                </div>
+                                                <div className="hidden grid-cols-4 items-center gap-4">
+                                                    <label htmlFor="areasConhecimento" className="text-lg font-medium text-right">
+                                                        Áreas de Conhecimento
+                                                    </label>
+                                                    <Input id="areasConhecimento" name="areasConhecimento" className="col-span-3 border rounded-md shadow-sm px-3 py-2" />
+                                                </div>
+                                                <div className="flex items-center space-x-3">
+                                                    <input
+                                                        id="privado"
+                                                        type="checkbox"
+                                                        className="w-5 h-5 border-gray-300 rounded checked:bg-custom-green checked:border-transparent focus:ring-custom-green"
+                                                    />
+                                                    <Label htmlFor="privado" className="text-base" title="As informações só poderão ser acessadas com sua permissão">
+                                                        Privado
+                                                    </Label>
+                                                </div>
+                                                <div className="flex justify-end gap-3 mt-4">
+                                                    <DialogClose>
+                                                        <Button type="button" variant="secondary" className="py-2 px-4 text-base ">
+                                                            Fechar
+                                                        </Button>
+                                                    </DialogClose>
+                                                    <Button type="submit" className="py-2 px-4 text-base bg-custom-green text-black font-bold ">
+                                                        Salvar
+                                                    </Button>
+                                                </div>
+                                            </form>
+                                        </DialogContent>
+                                    </Dialog>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </main>
             </div>
         </div>
