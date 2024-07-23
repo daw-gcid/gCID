@@ -59,9 +59,10 @@ export default function Dashboard() {
     const [projects, setProjects] = useState([]); //Isso é uma variavel para verificar se existem projetos ou não, dessa forma ira mudar a apresentação de projetos. Fiz por variavel por não saber como pegar dados do bd..
 
     useEffect(() => {
-        if (user) {
-            api.get(`/projeto/cliente/7242efa0-1631-4e21-8fe3-79465baca38f`)
+        if (user && user.cliente) {
+            api.get(`/projeto/cliente/${user.cliente.id}`)
                 .then((response) => {
+                    console.log(response.data);
                     setProjects(response.data);
                 })
                 .catch((error: AxiosError) => {
@@ -99,6 +100,16 @@ export default function Dashboard() {
         event.preventDefault();
         const formData = new FormData(event.currentTarget as HTMLFormElement);
         const data = Object.fromEntries(formData.entries());
+        //ajeitar como vc esta pegando os dados do form. Não usar campos hidden, ao inves preencher aqui na função. 
+
+        try {
+            api.post("/projeto", data);
+            toast.success("Projeto cadastrado com sucesso!");
+            openDialog();
+        } catch (error) {
+            const err = error as AxiosError;
+            toast.error((err.response?.data as { message: string })?.message);
+        }
 
         // Falta a parte de salvar os dados no bd
     };
@@ -307,7 +318,7 @@ export default function Dashboard() {
                     </div>
                     <div className="flex flex-1">
                         {/* Essa parte aqui serve para verificar se na lista existe algo ou não, da para alterar pela tipo de estrutura de dados que vai ser usado. */}
-                        {/*projects.length > 0*/ 1 != 1 ? (
+                        {projects.length > 0 ? (
                             <div className="flex-1 grid grid-cols-1 gap-4 ">
                                 {projects.map((project: Project, index) => (
                                     <Card key={index}>

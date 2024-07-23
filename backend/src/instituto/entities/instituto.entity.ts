@@ -49,10 +49,11 @@ export class Instituto {
 
   @OneToMany(() => Projeto, (projeto) => projeto.instituto, {
     nullable: true,
+    onDelete: 'SET NULL',
   })
   projetos: Projeto[];
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 }

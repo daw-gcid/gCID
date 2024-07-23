@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import Logo from './gcidLogo';
 import RadioButtonGroup from './radioUser';
 import { AuthContext } from '@/src/context/authContext';
+import Link from 'next/link';
 
 const LoginPage: React.FC<{ changeToSignUp: () => void }> = ({ changeToSignUp }) => {
   const { login } = useContext(AuthContext); // Obtém a função de login do AuthContext
@@ -20,7 +21,9 @@ const LoginPage: React.FC<{ changeToSignUp: () => void }> = ({ changeToSignUp })
       <div className="flex min-h-full flex-1 flex-col justify-center mt-32 px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <div className='flex justify-center'>
+            <Link href='/'>
             <Logo />
+            </Link>
           </div>
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Login
