@@ -89,7 +89,7 @@ export class TalentoService {
     try {
       return await this.talentoRepository.save(talento);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       throw new BadRequestException('Talento not created', error);
     }
     //return talento + user associado

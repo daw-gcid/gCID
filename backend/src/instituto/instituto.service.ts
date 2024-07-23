@@ -15,7 +15,7 @@ export class InstitutoService {
   ) {}
 
   async create(createInstitutoDto: CreateInstitutoDto) {
-    const instituto = await this.institutoRepository.save(createInstitutoDto);
+    const instituto = await this.institutoRepository.create(createInstitutoDto);
     instituto.user = await this.userService.findOne(createInstitutoDto.userId);
     if (!instituto.user) {
       throw new Error('User not found');
@@ -27,8 +27,7 @@ export class InstitutoService {
     if (!userSaved) {
       throw new Error('User not updated');
     }
-
-    return await this.institutoRepository.save(instituto);
+    return this.institutoRepository.save(instituto);
   }
 
   findAll() {

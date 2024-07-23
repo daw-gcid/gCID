@@ -83,7 +83,7 @@ export class Talento {
   })
   experiencias: Experiencia[];
 
-  @OneToOne(() => User, { nullable: false, eager: true })
+  @OneToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 }

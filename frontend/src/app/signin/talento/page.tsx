@@ -61,7 +61,7 @@ function SigninTalentoPage() {
         },
       });
       toast.success("Talento cadastrado com sucesso!");
-      console.log(response);
+      // console.log(response);
       window.location.href = "/talento";
     } catch (error) {
       const err = error as AxiosError;
