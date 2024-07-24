@@ -2,39 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-#header-background {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(rgba(24, 54, 99, 0.205), rgba(0, 0, 0, 0));
-
-  &:after {
-    content: '';
-    position: absolute;
-    inset: 0%;
-    backdrop-filter: blur(10px);
-    mask: linear-gradient(black 67%, transparent);
-    z-index: -1;
-  }
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
-
-#main-image {
-  position: relative;
-  z-index: 0;
-
-  &:before {
-    content: "";
-    position: absolute;
-    z-index: -2;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background-color: #010d1b;
-    mask: linear-gradient(black 5%, transparent, black 87%);
-  }
-}
-
 
 @layer base {
   :root {

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useContext } from "react";
-import Logo from "../../../components/gcidLogo";
+import Logo from "../../../../components/gcidLogo";
 import { AuthContext } from "@/src/context/authContext";
 import { api } from "@/src/api/axios";
 import { AxiosError } from "axios";
