@@ -8,9 +8,6 @@ export class CreateProjetoDto {
   @IsString()
   descricao: string;
 
-  @IsNumber()
-  status: projetoStatus;
-
   @IsString()
   feedback: string;
 
