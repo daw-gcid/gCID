@@ -12,7 +12,6 @@ import { redirect, useRouter } from "next/navigation";
 import { api } from "../api/axios";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
-import { useCookies } from "next-client-cookies";
 
 type signInDto = {
   email: string;
@@ -35,14 +34,51 @@ type AuthContextType = {
   signUp: (signUpDto: signUpDto) => Promise<void>;
 };
 
-type User = {
+export type User = {
   username: string;
   email: string;
   userType: number;
   image: string;
   status: number;
   id: string;
+  cliente?: Cliente;
+  instituto?: Instituto;
+  talento?: Talento;
 };
+
+export type Cliente = {
+  id: string;
+  nome: string;
+  cnpj: string;
+  endereco: string;
+  telefone: string;
+};
+
+export type Instituto = {
+  id: string;
+  cnpj: string;
+  nome: string;
+  endereco: string;
+  cidade: string;
+  estado: string;
+  telefone: string;
+  email: string;
+  descricao: string;
+  ranking: number;
+};
+
+export type Talento = {
+  id: string;
+  nome: string;
+  cpf: string;
+  endereco: string;
+  cidade: string;
+  estado: string;
+  telefone: string;
+  email: string;
+  descricao: string;
+  ranking: number;
+}
 
 export const AuthContext = createContext({} as AuthContextType);
 
@@ -51,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const isAuthenticated = user !== null;
   const [loading, setloading] = useState(false);
-  const cookies = useCookies();
+  // const cookies = useCookies();
 
   useLayoutEffect(() => {
     checkAuthentication();
@@ -86,14 +122,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       pending: "Logging in...",
       success: {
         render({ data: response }) {
-          console.log(response.data);
+          // console.log(response.data);
           setUser(response.data);
-          cookies.set("user", JSON.stringify(response.data), {
-            // Convert response.data to a string
-            expires: 2,
-            sameSite: "None",
-            secure: true,
-          });
+          // cookies.set("user", JSON.stringify(response.data), {
+          //   // Convert response.data to a string
+          //   expires: 2,
+          //   sameSite: "None",
+          //   secure: true,
+          // });
           if (response.data.status === 0) {
             if (response.data.userType === 1) {
               router.push("/signin/cliente");
@@ -135,8 +171,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       pending: "Logging out...",
       success: {
         render() {
-          setUser(null);
-          cookies.remove("user");
+          // setUser(null);
+          // cookies.remove("user");
           router.push("/login");
           return "Logout successful";
         },
@@ -156,12 +192,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       success: {
         render({ data: response }) {
           setUser(response.data);
-          console.log(response.data);
-          cookies.set("user", JSON.stringify(response.data), {
-            expires: 2,
-            sameSite: "None",
-            secure: true,
-          });
+          // console.log(response.data);
+          // cookies.set("user", JSON.stringify(response.data), {
+          //   expires: 2,
+          //   sameSite: "None",
+          //   secure: true,
+          // });
           window.location.reload();
           return "Sign up successful";
         },

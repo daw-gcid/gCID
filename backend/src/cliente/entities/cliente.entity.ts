@@ -29,10 +29,13 @@ export class Cliente {
   @Column({ nullable: true, length: 100 })
   endereco: string;
 
-  @OneToMany(() => Projeto, (projeto) => projeto.cliente, { nullable: true })
+  @OneToMany(() => Projeto, (projeto) => projeto.cliente, {
+    nullable: true,
+    onDelete: 'RESTRICT',
+  })
   projetos: Projeto[];
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 }

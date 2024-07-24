@@ -33,7 +33,7 @@ const handleRegisterClient = async (event: React.FormEvent) => {
 	try {
 		const response = await api.post("/cliente", clienteDto);
 		toast.success("Cliente cadastrado com sucesso!");
-		console.log(response);
+		// console.log(response);
 		window.location.href = "/client"; // Redireciona para a página inicial
 	} catch (error) {
 		const err = error as AxiosError;
