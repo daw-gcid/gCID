@@ -30,6 +30,11 @@ export class ProjetoController {
     return this.projetoService.findOne(id);
   }
 
+  @Get('/publico')
+  findAllPublicProjects() {
+    return this.projetoService.findAllPublicProjects();
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProjetoDto: UpdateProjetoDto) {
     return this.projetoService.update(id, updateProjetoDto);
