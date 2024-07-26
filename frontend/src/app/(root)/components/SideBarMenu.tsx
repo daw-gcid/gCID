@@ -24,7 +24,7 @@ export function SidebarMenu({ responsive }: { responsive: boolean }) {
   const currentMenu: UserOptions[] =
     userType == 1 ? clientMenu : userType == 2 ? instituteMenu : talentMenu;
 
-    console.log(window.location.href);
+    // console.log(window.location.href);
 
   return (
     <nav className="grid items-start px-2 text-sm font-medium lg:px-4">

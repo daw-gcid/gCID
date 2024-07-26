@@ -1,16 +1,26 @@
 import { api } from "@/src/api/axios";
 
-export function getProjetos(id: string) {
-  let response;
-  api
-    .get(`/projeto/cliente/${id}`)
-    .then((res) => (response = res))
-    .catch((e) => (response = e));
+import { User } from "@/src/context/authContext";
 
-  return response;
-}
+export const GetProjects = (user: User) => {
+  const fetchData = async () => {
+    try {
+      const response = await api.get(`/projeto/cliente/${user?.cliente?.id}`);
+      const jsonData = response.data;
+      return jsonData;
+    } catch (error) {
+      console.error("Erro ao obter os projetos:", error);
+      return [];
+    }
+  };
+
+  return fetchData();
+};
+
+export default GetProjects;
 
 export async function createProjeto(projeto: any) {
+  console.log(projeto);
   const response = await api.post("/projeto", projeto);
 
   return response;

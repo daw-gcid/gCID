@@ -30,51 +30,36 @@ export class ProjetoService {
     const cliente = await this.clienteService.findOne(
       createProjetoDto.clienteId,
     );
-    const instituto = await this.institutoService.findOne(
-      createProjetoDto.institutoId,
-    );
-
-    for (const areaName of createProjetoDto.areasConhecimento) {
-      const achouArea = await this.areaService.findOneByName(areaName);
-
-      if (achouArea != null) {
-        areas.push(achouArea);
-      }
-    }
-
-    if (createProjetoDto.institutoId != null) {
-      proj.instituto = await this.institutoService.findOne(
-        createProjetoDto.institutoId,
-      );
-    } else proj.instituto = null;
-
-    if (createProjetoDto.feedback != null) {
-      proj.dtFeedback = new Date();
-    } else {
-      proj.dtFeedback = null;
-    }
 
     proj.areas = areas;
     proj.cliente = cliente;
-    proj.instituto = instituto;
+    // proj.instituto = instituto;
 
     await this.projetoRepository.save(proj);
 
     return proj.id;
   }
 
-  findAllClienteProjects(clientId: string) {
-    return this.projetoRepository.find({
+  async findAllClienteProjects(clientId: string) {
+    return await this.projetoRepository.find({
       where: { cliente: { id: clientId } },
       relations: ['cliente'],
     });
   }
 
-  findAllInstituteProjects(instituteId: string) {
-    return this.projetoRepository.find({
+  async findAllInstituteProjects(instituteId: string) {
+    return await this.projetoRepository.find({
       where: { instituto: { id: instituteId } },
       relations: ['instituto'],
     });
+  }
+
+  async findAllPublicProjects() {
+    const projects = await this.projetoRepository.find({
+      where: { publico: true },
+    });
+
+    return projects;
   }
 
   async findOne(id: string) {

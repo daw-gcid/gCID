@@ -1,16 +1,15 @@
 import { Lightbulb, LineChart } from "lucide-react";
 import { UserOptions } from "../interfaces/user-menu";
 
-
 export const clientMenu: UserOptions[] = [
   {
     title: "Projetos",
-    href: "/projetos",
+    href: "/client/projetos",
     icon: Lightbulb,
   },
   {
     title: "Dashboard",
-    href: "/dashboard",
+    href: "/client/dashboard",
     icon: LineChart,
   },
 ];
