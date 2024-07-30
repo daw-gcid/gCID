@@ -6,8 +6,7 @@ import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { api } from "@/src/api/axios";
 
- function SigninInstitutoPage() {
-
+ const SigninInstitutoPage: React.FC = () => {
   const [nome, setName] = useState("");
   const [cnpj, setCnpj] = useState("");
   const [endereco, setEndereco] = useState("");

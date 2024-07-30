@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,19 +14,33 @@ export class ClienteService {
   ) {}
 
   async create(createClienteDto: CreateClienteDto) {
-    const cliente = await this.clienteRepository.create(createClienteDto);
-    cliente.user = await this.userService.findOne(createClienteDto.userId);
-    if (!cliente.user) {
-      throw new Error('User not found');
+    console.log('Iniciando criação do cliente com DTO:', createClienteDto);
+
+    const user = await this.userService.findOne(createClienteDto.userId);
+    if (!user) {
+      console.error('Usuário não encontrado');
+      throw new NotFoundException('Usuário não encontrado');
     }
-    const user = cliente.user;
-    delete user.password;
+
+    const cliente = this.clienteRepository.create(createClienteDto);
+    cliente.user = user;
+
     user.status = 1;
-    const userSaved = await this.userService.update(user.id, user);
-    if (!userSaved) {
-      throw new Error('User not updated');
+
+    try {
+      const userSaved = await this.userService.update(user.id, user);
+      if (!userSaved) {
+        console.error('Falha ao atualizar o usuário');
+        throw new BadRequestException('Falha ao atualizar o usuário');
+      }
+
+      const savedCliente = await this.clienteRepository.save(cliente);
+      console.log('Cliente salvo com sucesso:', savedCliente);
+      return savedCliente;
+    } catch (error) {
+      console.error('Erro ao salvar cliente:', error.message);
+      throw new BadRequestException('Erro ao salvar cliente: ' + error.message);
     }
-    return await this.clienteRepository.save(cliente);
   }
 
   async findAll() {

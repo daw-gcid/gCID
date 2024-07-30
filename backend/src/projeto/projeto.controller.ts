@@ -20,6 +20,11 @@ export class ProjetoController {
     return this.projetoService.create(createProjetoDto);
   }
 
+  @Get()
+  findAll() {
+    return this.projetoService.findAll();
+  }
+
   @Get('cliente/:id')
   findAllClienteProjects(@Param('id') id: string) {
     return this.projetoService.findAllClienteProjects(id);

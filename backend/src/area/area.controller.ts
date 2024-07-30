@@ -19,7 +19,7 @@ export class AreaController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.areaService.findOneById(id);
+    return this.areaService.findOne(id);
   }
 
   @Patch(':id')
