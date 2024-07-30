@@ -7,6 +7,7 @@ interface Project {
   nome: string;
   descricao: string;
   publico: boolean;
+  status: number;
 }
 
 export function ComponentsManager() {
