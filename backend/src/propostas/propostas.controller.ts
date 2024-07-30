@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PropostasService } from './propostas.service';
 import { CreatePropostaDto } from './dto/create-proposta.dto';
 import { UpdatePropostaDto } from './dto/update-proposta.dto';
@@ -12,9 +20,14 @@ export class PropostasController {
     return this.propostasService.create(createPropostaDto);
   }
 
-  @Get()
-  findAll() {
-    return this.propostasService.findAll();
+  @Get('institute/:id')
+  findAllInstitutesProposals(@Param('id') id: string) {
+    return this.propostasService.findAllInstitutesProposal(id);
+  }
+
+  @Get('client/:id')
+  findAllClientProposals(@Param('id') id: string) {
+    return this.propostasService.findAllClientsProposal(id);
   }
 
   @Get(':id')
@@ -23,7 +36,10 @@ export class PropostasController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePropostaDto: UpdatePropostaDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updatePropostaDto: UpdatePropostaDto,
+  ) {
     return this.propostasService.update(+id, updatePropostaDto);
   }
 

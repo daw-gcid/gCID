@@ -1,12 +1,15 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class CreatePropostaDto {
-  @IsString()
-  remetenteId: string;
-
   @IsString()
   institutoId: string;
 
   @IsString()
+  clientId: string;
+
+  @IsString()
   projetoId: string;
+
+  @IsNumber()
+  remetentType: number;
 }

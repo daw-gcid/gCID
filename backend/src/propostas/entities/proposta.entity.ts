@@ -1,3 +1,4 @@
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 import { Instituto } from 'src/instituto/entities/instituto.entity';
 import { Projeto } from 'src/projeto/entities/projeto.entity';
 import {
@@ -26,9 +27,12 @@ export class Proposta {
   })
   projeto: Projeto;
 
-  @Column({ default: false })
+  @Column({ default: false, nullable: false })
   aceito: boolean;
 
-  @Column({ type: 'uuid' })
+  @ManyToOne(() => Cliente, (cliente) => cliente.propostas, { nullable: false })
+  cliente: Cliente;
+
+  @Column()
   remetente: string;
 }
