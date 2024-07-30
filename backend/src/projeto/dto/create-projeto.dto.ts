@@ -1,7 +1,7 @@
-import { IsArray, IsBoolean, IsNumber, IsString } from 'class-validator';
-import { ProjetoStatus } from '../entities/projeto.entity';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateProjetoDto {
+  @IsNotEmpty()
   @IsString()
   nome: string;
 

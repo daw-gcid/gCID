@@ -1,3 +1,9 @@
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Projeto } from './entities/projeto.entity';
 import { Repository } from 'typeorm';
 import { AreaService } from 'src/area/area.service';
@@ -6,7 +12,6 @@ import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
 import { InstitutoService } from 'src/instituto/instituto.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BadRequestException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ProjetoService {
@@ -19,29 +24,39 @@ export class ProjetoService {
   ) {}
 
   async create(createProjetoDto: CreateProjetoDto) {
-    if (createProjetoDto.clienteId === null) {
-      return new BadRequestException('O id de cliente não pode ser vazio');
+    try {
+      // Verifica se o cliente existe
+      if (!createProjetoDto.clienteId) {
+        throw new BadRequestException('O id de cliente não pode ser vazio');
+      }
+      const cliente = await this.clienteService.findOne(
+        createProjetoDto.clienteId,
+      );
+      if (!cliente) {
+        throw new NotFoundException(
+          `Cliente de ID ${createProjetoDto.clienteId} não encontrado`,
+        );
+      }
+
+      // Cria o projeto
+      const proj = this.projetoRepository.create(createProjetoDto);
+      proj.cliente = cliente;
+
+      // Salva o projeto
+      const savedProjeto = await this.projetoRepository.save(proj);
+      console.log('Projeto salvo com sucesso:', savedProjeto);
+
+      return savedProjeto.id;
+    } catch (error) {
+      console.error('Erro ao criar projeto:', error.message);
+      throw new InternalServerErrorException(
+        'Erro ao criar projeto: ' + error.message,
+      );
     }
-
-    const proj = this.projetoRepository.create(createProjetoDto);
-
-    const areas = [];
-
-    const cliente = await this.clienteService.findOne(
-      createProjetoDto.clienteId,
-    );
-
-    proj.areas = areas;
-    proj.cliente = cliente;
-    // proj.instituto = instituto;
-
-    await this.projetoRepository.save(proj);
-
-    return proj.id;
   }
 
   async findAllClienteProjects(clientId: string) {
-    return await this.projetoRepository.find({
+    return this.projetoRepository.find({
       where: { cliente: { id: clientId } },
       relations: ['cliente'],
     });
@@ -63,19 +78,22 @@ export class ProjetoService {
   }
 
   async findOne(id: string) {
-    return await this.projetoRepository.findOne({ where: { id: id } });
+    return this.projetoRepository.findOne({ where: { id } });
+  }
+
+  async findAll() {
+    return await this.projetoRepository.find();
   }
 
   async update(id: string, updateProjetoDto: UpdateProjetoDto) {
     const proj = await this.projetoRepository.findOne({
-      where: { id: id },
+      where: { id },
       relations: ['areas', 'cliente', 'instituto'],
     });
     if (!proj) {
-      throw new BadRequestException('Projeto não encontrado');
+      throw new NotFoundException('Projeto não encontrado');
     }
 
-    // Verifica se o clienteId foi enviado no DTO e remove-o
     if (updateProjetoDto.clienteId) {
       delete updateProjetoDto.clienteId;
     }
@@ -84,6 +102,11 @@ export class ProjetoService {
       const instituto = await this.institutoService.findOne(
         updateProjetoDto.institutoId,
       );
+      if (!instituto) {
+        throw new NotFoundException(
+          `Instituto de ID ${updateProjetoDto.institutoId} não encontrado`,
+        );
+      }
       proj.instituto = instituto;
     } else {
       proj.instituto = null;
@@ -91,20 +114,17 @@ export class ProjetoService {
 
     if (updateProjetoDto.areasConhecimento) {
       const areas = [];
-      for (const areaName of updateProjetoDto.areasConhecimento) {
-        const achouArea = await this.areaService.findOneByName(areaName);
-        if (achouArea) {
-          areas.push(achouArea);
+      for (const areaId of updateProjetoDto.areasConhecimento) {
+        const area = await this.areaService.findOne(areaId);
+        if (!area) {
+          throw new NotFoundException(`Área de ID ${areaId} não encontrada`);
         }
+        areas.push(area);
       }
       proj.areas = areas;
     }
 
-    if (updateProjetoDto.feedback) {
-      proj.dtFeedback = new Date();
-    } else {
-      proj.dtFeedback = null;
-    }
+    proj.dtFeedback = updateProjetoDto.feedback ? new Date() : null;
 
     Object.assign(proj, updateProjetoDto);
 
@@ -115,12 +135,12 @@ export class ProjetoService {
 
   async remove(id: string) {
     const proj = await this.projetoRepository.findOne({
-      where: { id: id },
+      where: { id },
       relations: ['areas', 'cliente', 'instituto'],
     });
 
     if (!proj) {
-      throw new BadRequestException('Projeto não encontrado');
+      throw new NotFoundException('Projeto não encontrado');
     }
 
     return await this.projetoRepository.delete(id);
