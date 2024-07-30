@@ -1,31 +1,36 @@
-import type { Metadata } from "next";
-import { inter } from "@/src/app/fonts";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+import { inter } from "@/src/app/fonts";
 import { AuthProvider } from "../context/authContext";
+import type { Metadata } from "next";
+import { QueryClientProvider } from "@tanstack/react-query";
 import ToastProvider from "../context/ToastContext";
-
-// const inter = Inter({ subsets: ["latin"] });
+import { queryClient } from "../lib/react-query";
 
 export const metadata: Metadata = {
-  title: "GCID - Conectando quem precisa com quem tem a solução",
+  title: "GCID",
   description: "GCID - Conectando quem precisa com quem tem a solução",
 };
 
-export default function RootLayout({
+export default function AppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
-    <AuthProvider>
-      <html lang="pt-br">
-        <body className={inter.className}>
-          <ToastProvider>
-            {children }
-          </ToastProvider>
-        </body>
-      </html>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <html lang="pt-br" suppressHydrationWarning>
+          <body
+            className={cn(
+              "min-h-screen bg-background font-sans antialiased",
+              inter.variable
+            )}
+          >
+            <ToastProvider>{children}</ToastProvider>
+          </body>
+        </html>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }

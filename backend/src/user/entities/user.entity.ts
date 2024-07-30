@@ -1,5 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { hashPasswordTransform } from 'src/common/helpers/crypto';
+import { Talento } from 'src/talento/entities/talento.entity';
+import { Instituto } from 'src/instituto/entities/instituto.entity';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 
 @Entity()
 export class User {
@@ -25,4 +28,22 @@ export class User {
 
   @Column({ type: 'int' }) // 1 client, 2 instituition, 3 talent
   userType: number;
+
+  @OneToOne(() => Talento, (talento) => talento.user, {
+    // eager: true,
+    nullable: true,
+  })
+  talento: Talento;
+
+  @OneToOne(() => Instituto, (instituto) => instituto.user, {
+    // eager: true,
+    nullable: true,
+  })
+  instituto: Instituto;
+
+  @OneToOne(() => Cliente, (cliente) => cliente.user, {
+    // eager: true,
+    nullable: true,
+  })
+  cliente: Cliente;
 }

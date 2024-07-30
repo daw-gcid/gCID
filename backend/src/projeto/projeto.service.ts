@@ -74,10 +74,18 @@ export class ProjetoService {
   }
 
   async findAllInstituteProjects(instituteId: string) {
-    return this.projetoRepository.find({
+    return await this.projetoRepository.find({
       where: { instituto: { id: instituteId } },
       relations: ['instituto'],
     });
+  }
+
+  async findAllPublicProjects() {
+    const projects = await this.projetoRepository.find({
+      where: { publico: true },
+    });
+
+    return projects;
   }
 
   async findOne(id: string) {

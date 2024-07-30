@@ -35,7 +35,10 @@ export class UserService {
   }
 
   async findOneId(id: string) {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['talento', 'instituto', 'cliente'],
+    });
     if (!user) {
       throw new BadRequestException(`User with id ${id} not found`);
     }
@@ -51,9 +54,15 @@ export class UserService {
 
     let user: User | undefined;
     if (username) {
-      user = await this.userRepository.findOne({ where: { username } });
+      user = await this.userRepository.findOne({
+        where: { username },
+        relations: ['talento', 'instituto', 'cliente'],
+      });
     } else if (email) {
-      user = await this.userRepository.findOne({ where: { email } });
+      user = await this.userRepository.findOne({
+        where: { email },
+        relations: ['talento', 'instituto', 'cliente'],
+      });
     }
     if (!user) {
       throw new BadRequestException(`User not found`);
