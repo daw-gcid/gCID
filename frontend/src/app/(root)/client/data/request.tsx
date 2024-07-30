@@ -1,5 +1,4 @@
 import { api } from "@/src/api/axios";
-
 import { User } from "@/src/context/authContext";
 
 export const GetProjects = (user: User) => {
@@ -20,7 +19,7 @@ export const GetProjects = (user: User) => {
 export default GetProjects;
 
 export async function createProjeto(projeto: any) {
-  console.log(projeto);
+
   const response = await api.post("/projeto", projeto);
 
   return response;
