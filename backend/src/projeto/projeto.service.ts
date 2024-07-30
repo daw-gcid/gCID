@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Projeto } from './entities/projeto.entity';
 import { Repository } from 'typeorm';
 import { AreaService } from 'src/area/area.service';
@@ -24,36 +29,18 @@ export class ProjetoService {
       if (!createProjetoDto.clienteId) {
         throw new BadRequestException('O id de cliente não pode ser vazio');
       }
-      const cliente = await this.clienteService.findOne(createProjetoDto.clienteId);
+      const cliente = await this.clienteService.findOne(
+        createProjetoDto.clienteId,
+      );
       if (!cliente) {
-        throw new NotFoundException(`Cliente de ID ${createProjetoDto.clienteId} não encontrado`);
-      }
-
-      // Verifica se o instituto existe
-      let instituto = null;
-      if (createProjetoDto.institutoId) {
-        instituto = await this.institutoService.findOne(createProjetoDto.institutoId);
-        if (!instituto) {
-          throw new NotFoundException(`Instituto de ID ${createProjetoDto.institutoId} não encontrado`);
-        }
-      }
-
-      // Verifica se as áreas conhecidas existem
-      const areas = [];
-      for (const areaId of createProjetoDto.areasConhecimento) {
-        const area = await this.areaService.findOne(areaId);
-        if (!area) {
-          throw new NotFoundException(`Área de ID ${areaId} não encontrada`);
-        }
-        areas.push(area);
+        throw new NotFoundException(
+          `Cliente de ID ${createProjetoDto.clienteId} não encontrado`,
+        );
       }
 
       // Cria o projeto
       const proj = this.projetoRepository.create(createProjetoDto);
       proj.cliente = cliente;
-      proj.instituto = instituto;
-      proj.areas = areas;
-      proj.dtFeedback = createProjetoDto.feedback ? new Date() : null;
 
       // Salva o projeto
       const savedProjeto = await this.projetoRepository.save(proj);
@@ -62,7 +49,9 @@ export class ProjetoService {
       return savedProjeto.id;
     } catch (error) {
       console.error('Erro ao criar projeto:', error.message);
-      throw new InternalServerErrorException('Erro ao criar projeto: ' + error.message);
+      throw new InternalServerErrorException(
+        'Erro ao criar projeto: ' + error.message,
+      );
     }
   }
 
@@ -110,9 +99,13 @@ export class ProjetoService {
     }
 
     if (updateProjetoDto.institutoId) {
-      const instituto = await this.institutoService.findOne(updateProjetoDto.institutoId);
+      const instituto = await this.institutoService.findOne(
+        updateProjetoDto.institutoId,
+      );
       if (!instituto) {
-        throw new NotFoundException(`Instituto de ID ${updateProjetoDto.institutoId} não encontrado`);
+        throw new NotFoundException(
+          `Instituto de ID ${updateProjetoDto.institutoId} não encontrado`,
+        );
       }
       proj.instituto = instituto;
     } else {
