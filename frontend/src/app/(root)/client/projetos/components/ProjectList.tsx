@@ -59,7 +59,7 @@ export function ProjectList() {
     if (!user) return;
 
     const fetchProjects = async () => {
-      const data = await GetProjects();
+      const data = await GetProjects(user);
       setProjects(data);
     };
 

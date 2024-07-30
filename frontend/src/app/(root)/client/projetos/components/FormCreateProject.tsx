@@ -78,7 +78,7 @@ export function FormCreateProject() {
       </div>
       <div className="flex justify-end gap-3 mt-4">
         <DialogClose>
-          <Button variant="secondary" className="py-2 px-4 text-base ">
+          <Button type="button" variant="secondary" className="py-2 px-4 text-base ">
             Fechar
           </Button>
         </DialogClose>
