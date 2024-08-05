@@ -84,7 +84,10 @@ export function ProjectsList({ proj }: { proj: Project[] }) {
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {proj.map((project, index) => (
-          <Card key={index} className="relative border-solid border-gray-600 p-4">
+          <Card
+            key={index}
+            className="relative border-solid border-gray-600 p-4"
+          >
             <div className="flex items-center justify-between">
               <div className="flex-1 flex flex-col items-start">
                 <CardTitle className="text-lg font-bold mb-2 text-center truncate">
@@ -101,7 +104,7 @@ export function ProjectsList({ proj }: { proj: Project[] }) {
 
               <div className="flex flex-col items-center space-y-2">
                 <form action="#">
-                  <Popover>
+                  <Popover key={"pop1"}>
                     <PopoverTrigger asChild>
                       <Button className="bg-transparent border-none shadow-none p-0 hover:none">
                         <Send className="w-6 h-6 text-custom-green" />
@@ -117,7 +120,11 @@ export function ProjectsList({ proj }: { proj: Project[] }) {
                           </p>
                         </div>
 
-                        <Popover open={open} onOpenChange={setOpen}>
+                        <Popover
+                          key={"pop2"}
+                          open={open}
+                          onOpenChange={setOpen}
+                        >
                           <PopoverTrigger asChild>
                             <div>
                               <Label className="text-base font-medium mb-2">
@@ -131,8 +138,7 @@ export function ProjectsList({ proj }: { proj: Project[] }) {
                               >
                                 {value
                                   ? institutos.find(
-                                      (instituto) =>
-                                        instituto.value === value
+                                      (instituto) => instituto.value === value
                                     )?.label
                                   : "Selecione o Instituto..."}
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -177,9 +183,9 @@ export function ProjectsList({ proj }: { proj: Project[] }) {
 
                         <div>
                           <Label>
-                            Descrição do projeto
+                            Mensagem de contato...
                             <Textarea
-                              placeholder="Escreva sua descrição."
+                              placeholder="Escreva sua mensagem..."
                               className="mt-1 focus-visible:ring-custom-green"
                             />
                           </Label>

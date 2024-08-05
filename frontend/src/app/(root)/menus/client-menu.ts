@@ -1,4 +1,4 @@
-import { Lightbulb, LineChart } from "lucide-react";
+import { BriefcaseBusiness, HeartHandshake, Lightbulb, LineChart } from "lucide-react";
 import { UserOptions } from "../interfaces/user-menu";
 
 export const clientMenu: UserOptions[] = [
@@ -12,4 +12,14 @@ export const clientMenu: UserOptions[] = [
     href: "/client/dashboard",
     icon: LineChart,
   },
+  {
+    title: "Propostas",
+    href: "/client/propostas",
+    icon: BriefcaseBusiness
+  },
+  {
+    title: "Parcerias",
+    href: "/client/parcerias",
+    icon: HeartHandshake
+  }
 ];
