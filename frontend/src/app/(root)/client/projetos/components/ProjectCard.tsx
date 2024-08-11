@@ -36,7 +36,10 @@ import {
     CommandGroup,
     CommandInput,
     CommandItem,
+    CommandList,
 } from "@/src/components/ui/command";
+import { useContext } from "react";
+import { AuthContext } from "@/src/context/authContext";
 
 const institutos = [
     {
@@ -51,7 +54,7 @@ const institutos = [
         value: "UFAM",
         label: "UFAM",
     },
-];
+]
 
 interface Project {
     nome: string;
@@ -78,6 +81,12 @@ function getStatusDescription(status: number): string {
 export function ProjectCard({ proj, key }: { proj: Project, key: number }) {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("");
+    const { user } = useContext(AuthContext);
+
+    const handleSelect = (institutoValue: string) => {
+        setValue(institutoValue);
+        setOpen(false);
+    };
 
     return (
         /* Para ficar em formato de grid, o map que chamar essa função precisa está envelopado com uma div, exemplo em Temp.tsx do cliente*/
@@ -98,7 +107,7 @@ export function ProjectCard({ proj, key }: { proj: Project, key: number }) {
 
 
                     <div className="flex flex-col items-center space-y-2 flex-shrink-0">
-                        <form action="#">
+                        {user?.cliente && (<form action="#">
                             <Popover key={"pop1"}>
                                 <PopoverTrigger asChild>
                                     <Button className="bg-transparent border-none shadow-none p-0 hover:none">
@@ -113,37 +122,45 @@ export function ProjectCard({ proj, key }: { proj: Project, key: number }) {
                                                 Escolha um instituto para enviar uma proposta de seu projeto.
                                             </p>
                                         </div>
-                                        <Popover key={"pop2"} open={open} onOpenChange={setOpen}>
-                                            <PopoverTrigger asChild>
+                                        <Popover open={open} onOpenChange={setOpen}>
+                                            <PopoverTrigger asChild >
                                                 <div>
                                                     <Label className="text-base font-medium mb-2">
                                                         Institutos: <br />
                                                     </Label>
-                                                    <Button variant="outline" role="combobox" aria-expanded={open} className="w-[200px] justify-between">
+                                                    <Button variant="outline" role="combobox" aria-expanded={open} className="w-[285px] justify-between">
                                                         {value ? institutos.find((instituto) => instituto.value === value)?.label : "Selecione o Instituto..."}
                                                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                     </Button>
                                                 </div>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-[200px] p-0">
+                                            <PopoverContent className="w-[285px] p-0">
                                                 <Command>
                                                     <CommandInput placeholder="Selecione o Instituto..." />
-                                                    <CommandEmpty>Nenhum Instituto encontrado.</CommandEmpty>
-                                                    <CommandGroup>
-                                                        {institutos.map((instituto) => (
-                                                            <CommandItem
-                                                                key={instituto.value}
-                                                                value={instituto.value}
-                                                                onSelect={(currentValue) => {
-                                                                    setValue(currentValue === value ? "" : currentValue);
-                                                                    setOpen(false);
-                                                                }}
-                                                            >
-                                                                <Check className={cn("mr-2 h-4 w-4", value === instituto.value ? "opacity-100" : "opacity-0")} />
-                                                                {instituto.label}
-                                                            </CommandItem>
-                                                        ))}
-                                                    </CommandGroup>
+                                                    <CommandList>
+                                                        <CommandEmpty>Nenhum instituto encontrado.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {institutos.map((instituto) => (
+                                                                <CommandItem
+                                                                    key={instituto.value}
+                                                                    value={instituto.value}
+                                                                    
+                                                                    onSelect={(currentValue) => {
+                                                                        setValue(currentValue === value ? "" : currentValue)
+                                                                        setOpen(false)
+                                                                    }}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            "mr-2 h-4 w-4",
+                                                                            value === instituto.value ? "opacity-100" : "opacity-0"
+                                                                        )}
+                                                                    />
+                                                                    {instituto.label}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
                                                 </Command>
                                             </PopoverContent>
                                         </Popover>
@@ -158,7 +175,7 @@ export function ProjectCard({ proj, key }: { proj: Project, key: number }) {
                                     </div>
                                 </PopoverContent>
                             </Popover>
-                        </form>
+                        </form>)}
                         <Dialog>
                             <DialogTrigger asChild>
                                 <Button className="bg-transparent border-none shadow-none p-0 hover:none">

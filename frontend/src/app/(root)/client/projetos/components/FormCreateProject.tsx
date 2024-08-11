@@ -81,13 +81,13 @@ export function FormCreateProject() {
           <Button type="button" variant="secondary" className="py-2 px-4 text-base ">
             Fechar
           </Button>
-        </DialogClose>
-        <Button
+          <Button
           type="submit"
           className="py-2 px-4 text-base bg-custom-blue text-white"
         >
           Salvar
         </Button>
+        </DialogClose>
       </div>
     </form>
   );
