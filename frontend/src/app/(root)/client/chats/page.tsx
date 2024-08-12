@@ -77,18 +77,20 @@ export default function ChatPage() {
 
         <div className="h-[50px] w-auto rounded-br-md border-r-2 border-b-2 border-black p-[3px]">
           <div className="flex w-full h-full items-center space-x-2 bg-white rounded-md p-[3px]">
-            <Input
-              type="text"
-              placeholder="Mensagem"
-              className="flex-1 h-full border-none outline-none focus:ring-0"
-            />
-            <Button
-              type="submit"
-              variant="ghost"
-              className="p-0 bg-transparent hover:bg-gray-100 rounded-full"
-            >
-              <SendHorizontal className="w-6 h-6 text-gray-600 hover:text-gray-900" />
-            </Button>
+            <form action="#">
+              <Input
+                type="text"
+                placeholder="Mensagem"
+                className="flex-1 h-full border-none outline-none focus:ring-0"
+              />
+              <Button
+                type="submit"
+                variant="ghost"
+                className="p-0 bg-transparent hover:bg-gray-100 rounded-full"
+              >
+                <SendHorizontal className="w-6 h-6 text-gray-600 hover:text-gray-900" />
+              </Button>
+            </form>
           </div>
         </div>
       </div>
