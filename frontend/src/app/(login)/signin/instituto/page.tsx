@@ -37,7 +37,7 @@ import { api } from "@/src/api/axios";
       const response = await api.post("/instituto", institutoDto);
       toast.success("Instituto cadastrado com sucesso!");
       // console.log(response);
-      window.location.href = "/instituto";
+      window.location.href = "/instituto/projetos";
     } catch (error) {
       const err = error as AxiosError;
       toast.error((err.response?.data as { message: string })?.message);
