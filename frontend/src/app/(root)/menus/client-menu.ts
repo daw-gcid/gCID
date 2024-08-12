@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, HeartHandshake, Lightbulb, LineChart } from "lucide-react";
+import { BriefcaseBusiness, HeartHandshake, Lightbulb, LineChart, MessageCircle } from "lucide-react";
 import { UserOptions } from "../interfaces/user-menu";
 
 export const clientMenu: UserOptions[] = [
@@ -21,5 +21,10 @@ export const clientMenu: UserOptions[] = [
     title: "Parcerias",
     href: "/client/parcerias",
     icon: HeartHandshake
+  },
+  {
+    title: "Chat",
+    href: "/client/chats",
+    icon: MessageCircle
   }
 ];

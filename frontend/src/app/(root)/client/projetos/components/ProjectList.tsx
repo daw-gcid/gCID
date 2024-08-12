@@ -82,7 +82,7 @@ export function ProjectList() {
   return (
     <div>
       <div className="flex items-center">
-        <h1 className="text-lg font-semibold md:text-2xl">Projetos</h1>
+        <h1 className="text-lg font-semibold md:text-2xl">Projetoss</h1>
         <Button
           onClick={openDialog}
           size="icon"
