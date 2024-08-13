@@ -1,5 +1,5 @@
 "use client";
-import { GetProjects } from "../data/request";
+import { getProjects } from "../data/request";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/src/components/ui/button";
 import { CirclePlus } from "lucide-react";
@@ -29,7 +29,7 @@ export default function ProjectsPage() {
 
   useQuery({
     queryKey: ["get-projects"],
-    queryFn: () => GetProjects(user!),
+    queryFn: () => getProjects(user!),
     enabled: !!user,
   });
 

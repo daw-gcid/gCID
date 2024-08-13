@@ -31,7 +31,7 @@ import {
 } from "@/src/components/ui/dialog";
 import { CirclePlus } from "lucide-react";
 
-import { createProjeto, GetProjects } from "../../data/request";
+import { createProjeto, getProjects } from "../../data/request";
 
 export function ProjectList() {
   const { user } = useContext(AuthContext);
@@ -59,7 +59,7 @@ export function ProjectList() {
     if (!user) return;
 
     const fetchProjects = async () => {
-      const data = await GetProjects(user);
+      const data = await getProjects(user);
       setProjects(data);
     };
 
