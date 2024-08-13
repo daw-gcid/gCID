@@ -1,7 +1,8 @@
-import { ProjectsSkeleton } from "./ProjectSkeleton";
-import { ProjectsList } from "./Temp";
-import { NoProjects } from "./NoProjects";
+
 import { useQueryClient } from "@tanstack/react-query";
+import { ProjectsSkeleton } from "../../projetos/components/ProjectSkeleton";
+import { NoProjects } from "../../projetos/components/NoProjects";
+import { PropostasList } from "./Temp";
 
 interface Project {
   nome: string;
@@ -10,7 +11,7 @@ interface Project {
   status: number;
 }
 
-export function ComponentsManager() {
+export function PropostasComponentsManager() {
   const queryClient = useQueryClient();
   const queryData = queryClient.getQueryData(["get-projects"]);
   const isLoading = !queryData;
@@ -22,7 +23,7 @@ export function ComponentsManager() {
   }
 
   if (isFetched && projects && projects.length > 0) {
-    return <ProjectsList proj={projects} />;
+    return <PropostasList proj={projects} />;
   }
 
   return <NoProjects />;

@@ -1,7 +1,7 @@
-export default function aaaa() {
-    return(
+export default function ClientHomePage() {
+    return (
         <div>
-            teste
+            Em construção...
         </div>
     )
 }

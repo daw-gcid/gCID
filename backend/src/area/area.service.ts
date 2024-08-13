@@ -22,10 +22,10 @@ export class AreaService {
     return await this.areaRepository.find();
   }
 
-  async findOneById(id: string) {
-    const area = await this.areaRepository.findOne({ where: { id: id } });
+  async findOne(id: string) {
+    const area = await this.areaRepository.findOne({ where: { id } });
     if (!area) {
-      throw new NotFoundException(`Area de id ${id} não encontrada`);
+      throw new NotFoundException(`Área de id ${id} não encontrada`);
     }
     return area;
   }
@@ -39,7 +39,7 @@ export class AreaService {
   }
 
   async update(id: string, updateAreaDto: UpdateAreaDto) {
-    const area = await this.findOneById(id);
+    const area = await this.findOne(id);
 
     if (!area) {
       throw new NotFoundException(`Area de id ${id} não encontrada`);
@@ -58,7 +58,7 @@ export class AreaService {
   }
 
   async remove(id: string) {
-    const area = await this.findOneById(id);
+    const area = await this.findOne(id);
     if (!area) {
       throw new NotFoundException(`Area de id ${id} não encontrada`);
     }

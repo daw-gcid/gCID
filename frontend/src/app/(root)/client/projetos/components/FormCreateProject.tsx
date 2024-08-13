@@ -2,7 +2,6 @@ import { Button } from "@/src/components/ui/button";
 import { Checkbox } from "@/src/components/ui/checkbox";
 import { DialogClose } from "@/src/components/ui/dialog";
 import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
 import { Textarea } from "@/src/components/ui/textarea";
 import { AuthContext } from "@/src/context/authContext";
 import { FormEvent, useContext, useState } from "react";
@@ -14,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/src/components/ui/tooltip";
 import { Info } from "lucide-react";
+import { Label } from "@/src/components/ui/label";
 
 export function FormCreateProject() {
   const { user } = useContext(AuthContext);
@@ -78,16 +78,16 @@ export function FormCreateProject() {
       </div>
       <div className="flex justify-end gap-3 mt-4">
         <DialogClose>
-          <Button variant="secondary" className="py-2 px-4 text-base ">
+          <Button type="button" variant="secondary" className="py-2 px-4 text-base ">
             Fechar
           </Button>
-        </DialogClose>
-        <Button
+          <Button
           type="submit"
           className="py-2 px-4 text-base bg-custom-blue text-white"
         >
           Salvar
         </Button>
+        </DialogClose>
       </div>
     </form>
   );
