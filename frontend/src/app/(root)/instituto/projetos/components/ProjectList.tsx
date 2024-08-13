@@ -97,6 +97,7 @@ export function ProjectsList({ proj }: { proj: Project[] }) {
                   </div>
                 </DialogContent>
               </Dialog>
+              {/* Botão de controlar projeto */}
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="bg-transparent border-none shadow-none p-0 hover:none">

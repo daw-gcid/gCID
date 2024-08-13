@@ -1,21 +1,10 @@
 "use client";
-import GetProjects from "../data/request";     
-import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/src/components/ui/button";
-import { CirclePlus } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/src/components/ui/dialog";
 import { AuthContext } from "@/src/context/authContext";
+import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
+import GetProjects from "../data/request";
 import { ComponentsManager } from "./components/ComponentsManager";
 import { ProjectsSkeleton } from "./components/ProjectSkeleton";
-import { FormCreateProject } from "./components/FormCreateProject";
 
 export default function ProjectsPage() {
   const { user } = useContext(AuthContext);
