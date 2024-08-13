@@ -6,6 +6,7 @@ import { Project } from "../../projetos/components/ComponentsManager";
 import { Cliente, Instituto } from "@/src/context/authContext";
 
 export interface Proposta {
+  id: string;
   projeto: Project;
   descricao: string;
   aceito: boolean;

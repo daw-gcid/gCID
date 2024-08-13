@@ -9,11 +9,11 @@ import {
   DialogTrigger,
 } from "@/src/components/ui/dialog";
 import { Label } from "@/src/components/ui/label";
-import { Check, CircleEllipsis, Send, X } from "lucide-react";
+import { Check, CircleEllipsis, X } from "lucide-react";
 import * as React from "react";
-import { useContext } from "react";
-import { AuthContext } from "@/src/context/authContext";
 import { Proposta } from "./ComponentsManager";
+import { useMutation } from "@tanstack/react-query";
+import { acceptProposal } from "../../data/request";
 
 function getStatusDescription(status: number): string {
   switch (status) {
@@ -28,17 +28,18 @@ function getStatusDescription(status: number): string {
     default:
       return "Desconhecido";
   }
+  ("");
 }
 
 export function PropostasCard({ proj }: { proj: Proposta }) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
-  const { user } = useContext(AuthContext);
-
-  const handleSelect = (institutoValue: string) => {
-    setValue(institutoValue);
-    setOpen(false);
-  };
+  const accept = useMutation({
+    mutationKey: ["accept-proposal"],
+    mutationFn: acceptProposal,
+    onSuccess() {
+      setOpenDialog(false);
+    },
+  });
+  const [openDialog, setOpenDialog] = React.useState(false);
 
   const handleAccept = () => {
     console.log("Proposta aceita:", proj.projeto.nome);
@@ -93,77 +94,86 @@ export function PropostasCard({ proj }: { proj: Proposta }) {
           <div className="flex flex-col items-center space-y-2 flex-shrink-0">
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="bg-transparent border-none shadow-none p-0 hover:none">
+                <Button
+                  className="bg-transparent border-none shadow-none p-0 hover:none"
+                  onClick={() => setOpenDialog(true)}
+                >
                   <CircleEllipsis className="w-6 h-6 text-custom-green" />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-lg sm:max-h-[80vh] overflow-y-auto bg-white shadow-lg p-6 rounded-lg">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl font-semibold mb-4">
-                    {proj?.projeto?.nome}
-                  </DialogTitle>
-                  <DialogDescription className="text-base text-muted-foreground mb-6">
-                    {proj?.descricao}
-                    <br />
-                  </DialogDescription>
-                </DialogHeader>
+              {openDialog && (
+                <DialogContent className="sm:max-w-lg sm:max-h-[80vh] overflow-y-auto bg-white shadow-lg p-6 rounded-lg">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl font-semibold mb-4">
+                      {proj?.projeto?.nome}
+                    </DialogTitle>
+                    <DialogDescription className="text-base text-muted-foreground mb-6">
+                      {proj?.descricao}
+                      <br />
+                    </DialogDescription>
+                  </DialogHeader>
 
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <Label className="font-medium w-1/3">Privacidade:</Label>
-                    <p className="w-2/3">
-                      {proj?.projeto?.publico ? "Público" : "Privado"}
-                    </p>
+                  <div className="space-y-4">
+                    <div className="flex items-center">
+                      <Label className="font-medium w-1/3">Privacidade:</Label>
+                      <p className="w-2/3">
+                        {proj?.projeto?.publico ? "Público" : "Privado"}
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <Label className="font-medium w-1/3">Status:</Label>
+                      <p className="w-2/3">
+                        {getStatusDescription(proj?.projeto?.status)}
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <Label className="font-medium w-1/3">Instituto:</Label>
+                      <p className="w-2/3">{proj.instituto.nome}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <Label className="font-medium w-1/3">
+                        Previsão de Início:
+                      </Label>
+                      <p className="w-2/3">{formatDate(proj.previsaoInicio)}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <Label className="font-medium w-1/3">
+                        Previsão de Conclusão:
+                      </Label>
+                      <p className="w-2/3">{formatDate(proj.previsaoFim)}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <Label className="font-medium w-1/3">
+                        Estimativa de Valor:
+                      </Label>
+                      <p className="w-2/3">
+                        {formatarValor(proj.estimativaValor)}
+                      </p>
+                    </div>
+                    <div className="flex">
+                      <Label className="font-medium w-1/3">Mensagem:</Label>
+                      <p className="w-2/3">{proj.message}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <Label className="font-medium w-1/3">Status:</Label>
-                    <p className="w-2/3">
-                      {getStatusDescription(proj?.projeto?.status)}
-                    </p>
-                  </div>
-                  <div className="flex items-center">
-                    <Label className="font-medium w-1/3">Instituto:</Label>
-                    <p className="w-2/3">{proj.instituto.nome}</p>
-                  </div>
-                  <div className="flex items-center">
-                    <Label className="font-medium w-1/3">
-                      Previsão de Início:
-                    </Label>
-                    <p className="w-2/3">{formatDate(proj.previsaoInicio)}</p>
-                  </div>
-                  <div className="flex items-center">
-                    <Label className="font-medium w-1/3">
-                      Previsão de Conclusão:
-                    </Label>
-                    <p className="w-2/3">{formatDate(proj.previsaoFim)}</p>
-                  </div>
-                  <div className="flex items-center">
-                    <Label className="font-medium w-1/3">
-                      Estimativa de Valor:
-                    </Label>
-                    <p className="w-2/3">
-                      {formatarValor(proj.estimativaValor)}
-                    </p>
-                  </div>
-                </div>
 
-                <div className="flex justify-end mt-6 space-x-3">
-                  <Button
-                    onClick={handleAccept}
-                    className="bg-green-600 hover:bg-green-700 text-white rounded-md flex items-center px-4 py-2"
-                  >
-                    <Check className="mr-2" />
-                    Aceitar
-                  </Button>
-                  <Button
-                    onClick={handleReject}
-                    className="bg-red-600 hover:bg-red-700 text-white rounded-md flex items-center px-4 py-2"
-                  >
-                    <X className="mr-2" />
-                    Rejeitar
-                  </Button>
-                </div>
-              </DialogContent>
+                  <div className="flex justify-end mt-6 space-x-3">
+                    <Button
+                      onClick={() => accept.mutate(proj.id)}
+                      className="bg-green-600 hover:bg-green-700 text-white rounded-md flex items-center px-4 py-2"
+                    >
+                      <Check className="mr-2" />
+                      Aceitar
+                    </Button>
+                    <Button
+                      onClick={() => setOpenDialog(false)}
+                      className="bg-red-600 hover:bg-red-700 text-white rounded-md flex items-center px-4 py-2"
+                    >
+                      <X className="mr-2" />
+                      Rejeitar
+                    </Button>
+                  </div>
+                </DialogContent>
+              )}
             </Dialog>
           </div>
         </div>

@@ -27,3 +27,9 @@ export async function getProposals(user: User) {
 
   return response.data;
 }
+
+export async function acceptProposal(id: string) {
+  const response = await api.post(`/propostas/accept/${id}`);
+
+  return response;
+}
