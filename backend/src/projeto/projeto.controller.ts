@@ -32,7 +32,7 @@ export class ProjetoController {
 
   @Get('instituto/:id')
   findAllInstitutoProjects(@Param('id') id: string) {
-    return this.projetoService.findOne(id);
+    return this.projetoService.findAllInstituteProjects(id);
   }
 
   @Get('/publico')

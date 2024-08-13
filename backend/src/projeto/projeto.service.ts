@@ -65,7 +65,7 @@ export class ProjetoService {
   async findAllInstituteProjects(instituteId: string) {
     return await this.projetoRepository.find({
       where: { instituto: { id: instituteId } },
-      relations: ['instituto'],
+      relations: ['instituto', 'cliente'],
     });
   }
 

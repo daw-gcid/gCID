@@ -140,9 +140,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }
           }else {
             if (response.data.userType === 1) {
-              router.push("/client");
+              router.push("/client/projetos");
             } else if (response.data.userType === 2) {
-              router.push("/instituto");
+              router.push("/instituto/projetos");
             } else if (response.data.userType === 3) {
               router.push("/talento");
             }
