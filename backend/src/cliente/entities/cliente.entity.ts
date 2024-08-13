@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { Projeto } from 'src/projeto/entities/projeto.entity';
+import { Proposta } from 'src/propostas/entities/proposta.entity';
 
 @Entity()
 export class Cliente {
@@ -34,6 +35,11 @@ export class Cliente {
     onDelete: 'RESTRICT',
   })
   projetos: Projeto[];
+
+  @OneToMany(() => Proposta, (proposta) => proposta.cliente, {
+    nullable: true,
+  })
+  propostas: Proposta[];
 
   @OneToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn()

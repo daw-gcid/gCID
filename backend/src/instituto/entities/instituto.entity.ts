@@ -1,4 +1,5 @@
 import { Projeto } from 'src/projeto/entities/projeto.entity';
+import { Proposta } from 'src/propostas/entities/proposta.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
@@ -52,6 +53,9 @@ export class Instituto {
     onDelete: 'SET NULL',
   })
   projetos: Projeto[];
+
+  @OneToMany(() => Proposta, (proposta) => proposta.instituto)
+  propostas: Proposta[];
 
   @OneToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn()
