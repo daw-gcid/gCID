@@ -3,11 +3,12 @@ import { ProjectsList } from "./Temp";
 import { NoProjects } from "./NoProjects";
 import { useQueryClient } from "@tanstack/react-query";
 
-interface Project {
+export interface Project {
   nome: string;
   descricao: string;
   publico: boolean;
   status: number;
+  estimativaValor: number;
 }
 
 export function ComponentsManager() {

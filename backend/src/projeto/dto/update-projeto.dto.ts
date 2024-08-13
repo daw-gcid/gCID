@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateProjetoDto } from './create-projeto.dto';
-import { IsArray, IsEnum, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNumber, IsString } from 'class-validator';
 import { ProjetoStatus } from '../entities/projeto.entity';
 
 export class UpdateProjetoDto extends PartialType(CreateProjetoDto) {
@@ -15,4 +15,7 @@ export class UpdateProjetoDto extends PartialType(CreateProjetoDto) {
 
   @IsEnum(ProjetoStatus)
   status: ProjetoStatus;
+
+  @IsNumber()
+  estimativaValor: number;
 }

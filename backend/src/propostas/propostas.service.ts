@@ -60,11 +60,15 @@ export class PropostasService {
       remetente = institute.id;
     }
 
-    const proposta = await this.propostaRepository.create({
+    const proposta = this.propostaRepository.create({
       instituto: institute,
       projeto: project,
       cliente: client,
       remetente: remetente,
+      message: createPropostaDto.message,
+      estimativaValor: createPropostaDto.estimativaValor,
+      previsaoInicio: createPropostaDto.previsaoInicio,
+      previsaoFim: createPropostaDto.previsaoFim,
     });
 
     return await this.propostaRepository.save(proposta);
@@ -92,19 +96,21 @@ export class PropostasService {
 
     return await this.propostaRepository.find({
       where: { cliente: { id: id } },
-      relations: ['cliente', 'projeto'],
+      relations: ['cliente', 'projeto', 'instituto'],
     });
   }
 
   findOne(id: string) {
     return this.propostaRepository.findOne({
       where: { id: id },
-      relations: ['cliente', 'projeto'],
+      relations: ['cliente', 'projeto', 'instituto'],
     });
   }
 
   async update(id: string, updatePropostaDto: UpdatePropostaDto) {
     const proposta = await this.propostaRepository.findOne({ where: { id } });
+
+    // console.log(updatePropostaDto);
 
     if (!proposta) {
       throw new NotFoundException(`Proposta com id ${id} não encontrada`);
@@ -152,6 +158,18 @@ export class PropostasService {
       proposta.remetente = remetente;
     }
 
+    if (updatePropostaDto.estimativaValor) {
+      proposta.estimativaValor = updatePropostaDto.estimativaValor;
+    }
+
+    if (updatePropostaDto.previsaoInicio) {
+      proposta.previsaoInicio = updatePropostaDto.previsaoInicio;
+    }
+
+    if (updatePropostaDto.previsaoFim) {
+      proposta.previsaoFim = updatePropostaDto.previsaoFim;
+    }
+
     await this.propostaRepository.save(proposta);
     return proposta;
   }
@@ -166,5 +184,33 @@ export class PropostasService {
 
     await this.propostaRepository.remove(proposta);
     return { message: `Proposta com id ${id} foi removida com sucesso` };
+  }
+
+  async acceptProposal(id: string) {
+    const proposta = await this.propostaRepository.findOne({
+      where: { id },
+      relations: ['projeto', 'cliente', 'instituto'],
+    });
+
+    if (!proposta) {
+      throw new NotFoundException(`Proposta com id ${id} não encontrada`);
+    }
+
+    const projeto = proposta.projeto;
+
+    const relatedProposals = await this.propostaRepository.find({
+      where: { projeto: { id: projeto.id } },
+    });
+
+    for (const relatedProposta of relatedProposals) {
+      relatedProposta.aceito = false; // Ou qualquer outra atualização necessária
+      await this.propostaRepository.save(relatedProposta);
+    }
+
+    proposta.aceito = true;
+
+    await this.propostaRepository.save(proposta);
+
+    return `A proposta entre o instituto ${proposta.instituto.nome} e o cliente ${proposta.cliente.nome} foi aceita!`;
   }
 }

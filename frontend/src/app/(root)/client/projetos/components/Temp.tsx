@@ -11,7 +11,6 @@ interface Project {
   status: number;
 }
 
-
 export function ProjectsList({ proj }: { proj: Project[] }) {
 
   return (
@@ -20,7 +19,7 @@ export function ProjectsList({ proj }: { proj: Project[] }) {
       {/* <ProjectCard proj={proj}/> */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {proj.map((project, index) => (
-          <ProjectCard proj={project} key={index} />
+          <ProjectCard proj={project} key={index}/>
         ))}
       </div>
       <div className="fixed bottom-0 right-0 mb-10 mr-10">
