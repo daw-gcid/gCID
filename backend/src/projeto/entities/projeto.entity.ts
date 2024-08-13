@@ -53,6 +53,9 @@ export class Projeto {
   @Column()
   publico: boolean;
 
+  @Column({nullable: true})
+  estimativaValor: number;
+
   @ManyToOne(() => Cliente, (cliente) => cliente.projetos, {
     nullable: false,
   })

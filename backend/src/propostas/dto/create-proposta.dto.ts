@@ -1,4 +1,5 @@
-import { IsNumber, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreatePropostaDto {
   @IsString()
@@ -14,5 +15,16 @@ export class CreatePropostaDto {
   message: string;
 
   @IsNumber()
+  estimativaValor: number;
+
+  @IsNumber()
   remetentType: number;
+
+  @IsDate()
+  @Type(() => Date)
+  previsaoInicio: Date;
+
+  @IsDate()
+  @Type(() => Date)
+  previsaoFim: Date;
 }

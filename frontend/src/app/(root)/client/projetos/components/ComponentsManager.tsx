@@ -8,6 +8,7 @@ export interface Project {
   descricao: string;
   publico: boolean;
   status: number;
+  estimativaValor: number;
 }
 
 export function ComponentsManager() {
@@ -16,8 +17,6 @@ export function ComponentsManager() {
   const isLoading = !queryData;
   const isFetched = !!queryData;
   const projects = queryData as Project[];
-
-  console.log(projects);
 
   if (isLoading) {
     return <ProjectsSkeleton />;

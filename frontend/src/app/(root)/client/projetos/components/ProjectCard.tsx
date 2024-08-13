@@ -78,7 +78,7 @@ function getStatusDescription(status: number): string {
     }
 }
 
-export function ProjectCard({ proj, key }: { proj: Project, key: number }) {
+export function ProjectCard({ proj }: { proj: Project }) {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("");
     const { user } = useContext(AuthContext);
@@ -91,7 +91,7 @@ export function ProjectCard({ proj, key }: { proj: Project, key: number }) {
     return (
         /* Para ficar em formato de grid, o map que chamar essa função precisa está envelopado com uma div, exemplo em Temp.tsx do cliente*/
         <div>
-            <Card key={key} className="relative p-4 border-black border-solid">
+            <Card className="relative p-4 border-black border-solid">
                 <div className="flex items-center justify-between">
                     <div className="flex-1 flex flex-col items-start w-full">
                         <CardTitle className="text-xl font-semibold mb-2 text-gray-800 truncate w-full">

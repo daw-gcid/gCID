@@ -9,11 +9,6 @@ import {
   DialogTrigger,
 } from "@/src/components/ui/dialog";
 import { Label } from "@/src/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/src/components/ui/popover";
 import { Check, CircleEllipsis, Send, X } from "lucide-react";
 import * as React from "react";
 import { useContext } from "react";
@@ -53,6 +48,21 @@ export function PropostasCard({ proj }: { proj: Proposta }) {
     console.log("Proposta rejeitada:", proj.projeto.nome);
   };
 
+  const formatarValor = (valor: number) => {
+    return valor.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
+
+  function formatDate(date: Date): string {
+    const day = String(date?.getDate()).padStart(2, "0");
+    const month = String(date?.getMonth() + 1).padStart(2, "0");
+    const year = date?.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
   return (
     /* Para ficar em formato de grid, o map que chamar essa função precisa está envelopado com uma div, exemplo em Temp.tsx do cliente*/
     <div>
@@ -74,7 +84,9 @@ export function PropostasCard({ proj }: { proj: Proposta }) {
                         </p> */}
             <p className="text-sm text-gray-500">
               Instituto:{" "}
-              <span className="font-medium text-gray-800">IFAM-CMC</span>
+              <span className="font-medium text-gray-800">
+                {proj.instituto.nome}
+              </span>
             </p>
           </div>
 
@@ -111,25 +123,27 @@ export function PropostasCard({ proj }: { proj: Proposta }) {
                   </div>
                   <div className="flex items-center">
                     <Label className="font-medium w-1/3">Instituto:</Label>
-                    <p className="w-2/3">IFAM</p>
+                    <p className="w-2/3">{proj.instituto.nome}</p>
                   </div>
                   <div className="flex items-center">
                     <Label className="font-medium w-1/3">
                       Previsão de Início:
                     </Label>
-                    <p className="w-2/3">01/09/2024</p>
+                    <p className="w-2/3">{formatDate(proj.previsaoInicio)}</p>
                   </div>
                   <div className="flex items-center">
                     <Label className="font-medium w-1/3">
                       Previsão de Conclusão:
                     </Label>
-                    <p className="w-2/3">01/02/2025</p>
+                    <p className="w-2/3">{formatDate(proj.previsaoFim)}</p>
                   </div>
                   <div className="flex items-center">
                     <Label className="font-medium w-1/3">
                       Estimativa de Valor:
                     </Label>
-                    <p className="w-2/3">R$: 1.000.000,00</p>
+                    <p className="w-2/3">
+                      {formatarValor(proj.estimativaValor)}
+                    </p>
                   </div>
                 </div>
 

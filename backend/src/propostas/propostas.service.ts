@@ -92,19 +92,21 @@ export class PropostasService {
 
     return await this.propostaRepository.find({
       where: { cliente: { id: id } },
-      relations: ['cliente', 'projeto'],
+      relations: ['cliente', 'projeto', 'instituto'],
     });
   }
 
   findOne(id: string) {
     return this.propostaRepository.findOne({
       where: { id: id },
-      relations: ['cliente', 'projeto'],
+      relations: ['cliente', 'projeto', 'instituto'],
     });
   }
 
   async update(id: string, updatePropostaDto: UpdatePropostaDto) {
     const proposta = await this.propostaRepository.findOne({ where: { id } });
+
+    // console.log(updatePropostaDto);
 
     if (!proposta) {
       throw new NotFoundException(`Proposta com id ${id} não encontrada`);
@@ -150,6 +152,18 @@ export class PropostasService {
         throw new BadRequestException('Tipo de remetente inválido');
       }
       proposta.remetente = remetente;
+    }
+
+    if (updatePropostaDto.estimativaValor) {
+      proposta.estimativaValor = updatePropostaDto.estimativaValor;
+    }
+
+    if (updatePropostaDto.previsaoInicio) {
+      proposta.previsaoInicio = updatePropostaDto.previsaoInicio;
+    }
+
+    if (updatePropostaDto.previsaoFim) {
+      proposta.previsaoFim = updatePropostaDto.previsaoFim;
     }
 
     await this.propostaRepository.save(proposta);
