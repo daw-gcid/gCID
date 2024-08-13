@@ -20,6 +20,11 @@ export class PropostasController {
     return this.propostasService.create(createPropostaDto);
   }
 
+  @Post('/accept')
+  acceptProposal(@Body() createPropostaDto: CreatePropostaDto) {
+    return this.propostasService.create(createPropostaDto);
+  }
+
   @Get('institute/:id')
   findAllInstitutesProposals(@Param('id') id: string) {
     return this.propostasService.findAllInstitutesProposal(id);
@@ -32,7 +37,7 @@ export class PropostasController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.propostasService.findOne(+id);
+    return this.propostasService.findOne(id);
   }
 
   @Patch(':id')
@@ -40,11 +45,11 @@ export class PropostasController {
     @Param('id') id: string,
     @Body() updatePropostaDto: UpdatePropostaDto,
   ) {
-    return this.propostasService.update(+id, updatePropostaDto);
+    return this.propostasService.update(id, updatePropostaDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.propostasService.remove(+id);
+    return this.propostasService.remove(id);
   }
 }

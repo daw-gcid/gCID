@@ -92,19 +92,79 @@ export class PropostasService {
 
     return await this.propostaRepository.find({
       where: { cliente: { id: id } },
-      relations: ['cliente'],
+      relations: ['cliente', 'projeto'],
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} proposta`;
+  findOne(id: string) {
+    return this.propostaRepository.findOne({
+      where: { id: id },
+      relations: ['cliente', 'projeto'],
+    });
   }
 
-  update(id: number, updatePropostaDto: UpdatePropostaDto) {
-    return `This action updates a #${id} proposta`;
+  async update(id: string, updatePropostaDto: UpdatePropostaDto) {
+    const proposta = await this.propostaRepository.findOne({ where: { id } });
+
+    if (!proposta) {
+      throw new NotFoundException(`Proposta com id ${id} não encontrada`);
+    }
+
+    if (updatePropostaDto.clientId) {
+      const client = await this.clienteService.findOne(
+        updatePropostaDto.clientId,
+      );
+      if (!client) {
+        throw new NotFoundException('Cliente não encontrado');
+      }
+      proposta.cliente = client;
+    }
+
+    if (updatePropostaDto.institutoId) {
+      const institute = await this.institutoService.findOne(
+        updatePropostaDto.institutoId,
+      );
+      if (!institute) {
+        throw new NotFoundException('Instituto não encontrado');
+      }
+      proposta.instituto = institute;
+    }
+
+    if (updatePropostaDto.projetoId) {
+      const project = await this.projetoService.findOne(
+        updatePropostaDto.projetoId,
+      );
+      if (!project) {
+        throw new NotFoundException('Projeto não encontrado');
+      }
+      proposta.projeto = project;
+    }
+
+    if (updatePropostaDto.remetentType) {
+      let remetente: string;
+      if (updatePropostaDto.remetentType == 1) {
+        remetente = proposta.cliente.id;
+      } else if (updatePropostaDto.remetentType == 2) {
+        remetente = proposta.instituto.id;
+      } else {
+        throw new BadRequestException('Tipo de remetente inválido');
+      }
+      proposta.remetente = remetente;
+    }
+
+    await this.propostaRepository.save(proposta);
+    return proposta;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} proposta`;
+  // Método de delete
+  async remove(id: string) {
+    const proposta = await this.propostaRepository.findOne({ where: { id } });
+
+    if (!proposta) {
+      throw new NotFoundException(`Proposta com id ${id} não encontrada`);
+    }
+
+    await this.propostaRepository.remove(proposta);
+    return { message: `Proposta com id ${id} foi removida com sucesso` };
   }
 }

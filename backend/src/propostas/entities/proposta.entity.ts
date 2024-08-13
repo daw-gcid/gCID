@@ -30,6 +30,9 @@ export class Proposta {
   @Column({ default: false, nullable: false })
   aceito: boolean;
 
+  @Column()
+  message: string;
+
   @ManyToOne(() => Cliente, (cliente) => cliente.propostas, { nullable: false })
   cliente: Cliente;
 

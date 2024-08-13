@@ -10,6 +10,9 @@ export class CreatePropostaDto {
   @IsString()
   projetoId: string;
 
+  @IsString()
+  message: string;
+
   @IsNumber()
   remetentType: number;
 }
