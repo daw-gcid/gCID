@@ -1,5 +1,5 @@
 "use client";
-import GetProjects from "../data/request";
+import { GetProjects } from "../data/request";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/src/components/ui/button";
 import { CirclePlus } from "lucide-react";
@@ -48,15 +48,15 @@ export default function ProjectsPage() {
             </Button>
           </DialogTrigger>
           <DialogContent>
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-semibold mb-4">
-                  Cadastre seu projeto
-                </DialogTitle>
-                <DialogDescription className="text-base text-muted-foreground mb-6">
-                  Cadastre as informações do seu projeto aqui.
-                </DialogDescription>
-              </DialogHeader> 
-            <FormCreateProject /> 
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-semibold mb-4">
+                Cadastre seu projeto
+              </DialogTitle>
+              <DialogDescription className="text-base text-muted-foreground mb-6">
+                Cadastre as informações do seu projeto aqui.
+              </DialogDescription>
+            </DialogHeader>
+            <FormCreateProject />
           </DialogContent>
         </Dialog>
       </div>

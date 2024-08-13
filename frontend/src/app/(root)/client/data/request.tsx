@@ -16,11 +16,14 @@ export const GetProjects = (user: User) => {
   return fetchData();
 };
 
-export default GetProjects;
-
 export async function createProjeto(projeto: any) {
-
   const response = await api.post("/projeto", projeto);
 
   return response;
+}
+
+export async function getProposals(user: User) {
+  const response = await api.get(`/propostas/client/${user?.cliente?.id}`);
+
+  return response.data;
 }

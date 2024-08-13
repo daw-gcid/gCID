@@ -3,7 +3,7 @@ import { ProjectsList } from "./Temp";
 import { NoProjects } from "./NoProjects";
 import { useQueryClient } from "@tanstack/react-query";
 
-interface Project {
+export interface Project {
   nome: string;
   descricao: string;
   publico: boolean;
@@ -16,6 +16,8 @@ export function ComponentsManager() {
   const isLoading = !queryData;
   const isFetched = !!queryData;
   const projects = queryData as Project[];
+
+  console.log(projects);
 
   if (isLoading) {
     return <ProjectsSkeleton />;

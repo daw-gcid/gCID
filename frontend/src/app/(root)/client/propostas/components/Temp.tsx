@@ -1,16 +1,11 @@
 
 import * as React from "react";
 import { PropostasCard } from "./ProjectCard";
-
-interface Project {
-  nome: string;
-  descricao: string;
-  publico: boolean;
-  status: number;
-}
+import { Proposta } from "./ComponentsManager";
 
 
-export function PropostasList({ proj }: { proj: Project[] }) {
+
+export function PropostasList({ proj }: { proj: Proposta[] }) {
 
   return (
 
