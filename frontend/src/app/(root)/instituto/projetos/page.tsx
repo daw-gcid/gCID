@@ -2,7 +2,7 @@
 import { AuthContext } from "@/src/context/authContext";
 import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
-import GetProjects from "../data/request";
+import { getProjects } from "../data/request";
 import { ComponentsManager } from "./components/ComponentsManager";
 import { ProjectsSkeleton } from "./components/ProjectSkeleton";
 
@@ -19,7 +19,7 @@ export default function ProjectsPage() {
   
   useQuery({
     queryKey: ["get-projects"],
-    queryFn: () => GetProjects(user!),
+    queryFn: () => getProjects(user!),
     enabled: !!user,
   });
 
