@@ -6,11 +6,11 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   Column,
-  Unique,
+  CreateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity('proposta')
-@Unique(['instituto', 'projeto'])
 export class Proposta {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -30,6 +30,9 @@ export class Proposta {
   @Column({ default: false, nullable: false })
   aceito: boolean;
 
+  @Column({ default: 0 }) //0 - aguardando resposta, 1 - em negociação, 2 - aceita, 3 -rejeitada
+  status: number;
+
   @Column()
   message: string;
 
@@ -47,4 +50,10 @@ export class Proposta {
 
   @Column({ nullable: false })
   previsaoFim: Date;
+
+  @CreateDateColumn()
+  dataCriacao: Date;
+
+  @DeleteDateColumn()
+  dataExclusao: Date;
 }

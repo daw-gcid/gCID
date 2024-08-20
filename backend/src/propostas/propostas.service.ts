@@ -11,7 +11,6 @@ import { Repository } from 'typeorm';
 import { ProjetoService } from 'src/projeto/projeto.service';
 import { ClienteService } from 'src/cliente/cliente.service';
 import { InstitutoService } from 'src/instituto/instituto.service';
-import { AreaService } from 'src/area/area.service';
 
 @Injectable()
 export class PropostasService {
@@ -22,7 +21,11 @@ export class PropostasService {
     private clienteService: ClienteService,
     private institutoService: InstitutoService,
   ) {}
-  async create(createPropostaDto: CreatePropostaDto) {
+
+  async create(
+    createPropostaDto: CreatePropostaDto,
+    originalPropostaId?: string,
+  ) {
     if (!createPropostaDto.clientId) {
       throw new BadRequestException('Id de Cliente não pode ser vazio!');
     }
@@ -52,6 +55,7 @@ export class PropostasService {
     if (!client || !institute || !project) {
       throw new NotFoundException('Dados não encontrados no sistema!');
     }
+
     let remetente: string = '';
 
     if (createPropostaDto.remetentType == 1) {
@@ -60,18 +64,52 @@ export class PropostasService {
       remetente = institute.id;
     }
 
+    // Se houver uma proposta original, copiar suas informações
+    let originalProposta: Proposta | null = null;
+    if (originalPropostaId) {
+      originalProposta = await this.propostaRepository.findOne({
+        where: { id: originalPropostaId },
+        relations: ['cliente', 'instituto', 'projeto'],
+      });
+
+      if (!originalProposta) {
+        throw new NotFoundException('Proposta original não encontrada');
+      }
+    }
+
     const proposta = this.propostaRepository.create({
       instituto: institute,
       projeto: project,
       cliente: client,
       remetente: remetente,
-      message: createPropostaDto.message,
-      estimativaValor: createPropostaDto.estimativaValor,
-      previsaoInicio: createPropostaDto.previsaoInicio,
-      previsaoFim: createPropostaDto.previsaoFim,
+      status: originalProposta ? 1 : 0,
+      message: createPropostaDto.message || originalProposta?.message,
+      estimativaValor:
+        createPropostaDto.estimativaValor || originalProposta?.estimativaValor,
+      previsaoInicio:
+        createPropostaDto.previsaoInicio || originalProposta?.previsaoInicio,
+      previsaoFim:
+        createPropostaDto.previsaoFim || originalProposta?.previsaoFim,
     });
 
     return await this.propostaRepository.save(proposta);
+  }
+
+  async findOneInstitutoProposal(instituteId: string, projetoId: string) {
+    const propostas = await this.propostaRepository.find({
+      where: {
+        instituto: { id: instituteId },
+        projeto: { id: projetoId },
+      },
+      relations: ['cliente', 'projeto', 'instituto'],
+      order: { dataCriacao: 'DESC' },
+    });
+
+    if (propostas.length === 0) {
+      throw new NotFoundException('Proposta não encontrada');
+    }
+
+    return propostas[0]; // A primeira proposta é a mais recente
   }
 
   async findAllInstitutesProposal(id: string) {
@@ -81,10 +119,38 @@ export class PropostasService {
       throw new NotFoundException('Instituto não encontrado');
     }
 
-    return await this.propostaRepository.find({
+    const propostas = await this.propostaRepository.find({
       where: { instituto: { id: id } },
-      relations: ['instituto'],
+      order: { dataCriacao: 'DESC' },
+      relations: ['projeto', 'instituto', 'cliente'],
     });
+
+    const propostasUnicas = new Map<string, Proposta>();
+
+    for (const proposta of propostas) {
+      if (!propostasUnicas.has(proposta.projeto.id)) {
+        propostasUnicas.set(proposta.projeto.id, proposta);
+      }
+    }
+
+    return Array.from(propostasUnicas.values());
+  }
+
+  async findOneClientProposal(clientId: string, projetoId: string) {
+    const propostas = await this.propostaRepository.find({
+      where: {
+        cliente: { id: clientId },
+        projeto: { id: projetoId },
+      },
+      relations: ['cliente', 'projeto', 'instituto'],
+      order: { dataCriacao: 'DESC' },
+    });
+
+    if (propostas.length === 0) {
+      throw new NotFoundException('Proposta não encontrada');
+    }
+
+    return propostas[0]; // A primeira proposta é a mais recente
   }
 
   async findAllClientsProposal(id: string) {
@@ -94,10 +160,21 @@ export class PropostasService {
       throw new NotFoundException('Cliente não encontrado');
     }
 
-    return await this.propostaRepository.find({
-      where: { cliente: { id: id } },
+    const propostas = await this.propostaRepository.find({
+      where: { cliente: { id: id }, aceito: false },
       relations: ['cliente', 'projeto', 'instituto'],
+      order: { dataCriacao: 'DESC' },
     });
+
+    const propostasUnicas = new Map<string, Proposta>();
+
+    for (const proposta of propostas) {
+      if (!propostasUnicas.has(proposta.projeto.id)) {
+        propostasUnicas.set(proposta.projeto.id, proposta);
+      }
+    }
+
+    return Array.from(propostasUnicas.values());
   }
 
   findOne(id: string) {
@@ -196,18 +273,35 @@ export class PropostasService {
       throw new NotFoundException(`Proposta com id ${id} não encontrada`);
     }
 
-    const projeto = proposta.projeto;
+    if (!proposta.instituto.id) {
+      throw new NotFoundException(
+        'A Proposta não está associada a nenhum instituto',
+      );
+    }
+
+    const projeto = await this.projetoService.findOne(proposta.projeto.id);
 
     const relatedProposals = await this.propostaRepository.find({
-      where: { projeto: { id: projeto.id } },
+      where: { projeto: { id: projeto.id }, aceito: false },
     });
 
     for (const relatedProposta of relatedProposals) {
-      relatedProposta.aceito = false; // Ou qualquer outra atualização necessária
+      relatedProposta.dataExclusao = new Date(); // Marcar como deletado (soft delete)
       await this.propostaRepository.save(relatedProposta);
     }
 
     proposta.aceito = true;
+
+    projeto.instituto = proposta.instituto;
+    projeto.estimativaValor = proposta.estimativaValor;
+    projeto.dtInicio = proposta.previsaoInicio;
+    projeto.dtFim = proposta.previsaoFim;
+
+    await this.projetoService.update(proposta.projeto.id, {
+      estimativaValor: proposta.estimativaValor,
+      dtInicio: proposta.previsaoInicio,
+      dtFim: proposta.previsaoFim,
+    });
 
     await this.propostaRepository.save(proposta);
 
