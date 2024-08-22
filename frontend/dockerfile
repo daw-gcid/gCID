@@ -8,3 +8,7 @@ COPY package-lock.json ./
 RUN npm install
 
 COPY . .
+
+RUN chmod -R 755 /app
+
+CMD npm run build && npm run start

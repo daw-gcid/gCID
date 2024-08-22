@@ -1,38 +1,15 @@
 "use client";
-import { useContext } from 'react'
-import HomeLogo from '../components/HomeLogo'
-import ImgHome from '../components/ImgHome'
 import NavBar from '../components/NavBar'
-import { useRouter } from 'next/navigation';
+import Herohome from '../components/HeroHome';
+import Footer from '../components/Footer';
+import Contact from '../components/Contact';
 
 export default function Home() {
 
   return (
     <main className='h-full mt-16'>
       <NavBar/>
-      <section className='relative flex justify-center gap-10 px-10 py-5'>
-        <div className='relative bg-white w-2/5 rounded-[3rem]'>
-          <div className='realtive px-2 w-full mt-16'>
-
-            <div className='mb-3 block'>
-              <HomeLogo />
-            </div>
-
-            <div className='mt-10'>
-              <h1 className='text-[70px] font-semibold'>
-                A inovação começa aqui
-              </h1>
-              <p className='text-lg'>
-                Conectamos as melhores equipes de talentos com institutos de ponta para transformar suas ideias em realidade.
-              </p>
-            </div>
-
-          </div>
-        </div>
-        <div className='relative'>
-          <ImgHome/>
-        </div>
-      </section>
+      <Herohome/>
       <section className="bg-gray-100 py-10 text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-semibold mb-4">Como Funciona</h2>
@@ -61,6 +38,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Contact/>
+      <br/>
+      <Footer/>
+      
     </main>
   )
 }
