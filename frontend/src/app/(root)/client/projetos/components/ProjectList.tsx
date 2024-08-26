@@ -76,7 +76,7 @@ export function ProjectList() {
     };
     const resposta = await createProjeto(projeto);
 
-    console.log(resposta);
+    console.log('aqui');
   };
 
   return (

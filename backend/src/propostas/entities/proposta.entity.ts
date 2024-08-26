@@ -36,14 +36,11 @@ export class Proposta {
   @Column()
   message: string;
 
-  @Column()
+  @Column({ nullable: true })
   estimativaValor: number;
 
   @ManyToOne(() => Cliente, (cliente) => cliente.propostas, { nullable: false })
   cliente: Cliente;
-
-  @Column()
-  remetente: string;
 
   @Column({ nullable: false })
   previsaoInicio: Date;

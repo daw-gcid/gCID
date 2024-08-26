@@ -5,13 +5,16 @@ import { Button } from "@/src/components/ui/button";
 import { FormCreateProject } from "./FormCreateProject";
 
 interface Project {
+  id: number;
   nome: string;
   descricao: string;
   publico: boolean;
   status: number;
+  estimativaValor: number;
 }
 
 export function ProjectsList({ proj }: { proj: Project[] }) {
+
 
   return (
 

@@ -2,25 +2,26 @@ import { Button } from "@/src/components/ui/button";
 import { Checkbox } from "@/src/components/ui/checkbox";
 import { DialogClose } from "@/src/components/ui/dialog";
 import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
 import { Textarea } from "@/src/components/ui/textarea";
-import { AuthContext } from "@/src/context/authContext";
-import { FormEvent, useContext, useState } from "react";
-import { createProjeto } from "../../data/request";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/src/components/ui/tooltip";
+import { AuthContext } from "@/src/context/authContext";
 import { Info } from "lucide-react";
-import { Label } from "@/src/components/ui/label";
+import { FormEvent, useContext, useState } from "react";
 import { toast } from "react-toastify";
+import { updateProjeto } from "../../data/request";
+import { Project } from "./ComponentsManager";
 
-export function FormCreateProject() {
+export function FormUpdateProject({ Project }: { Project: Project }) {
   const { user } = useContext(AuthContext);
-  const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [publico, setPublico] = useState(false);
+  const [nome, setNome] = useState(Project.nome);
+  const [descricao, setDescricao] = useState(Project.descricao);
+  const [publico, setPublico] = useState(Project.publico);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -30,13 +31,12 @@ export function FormCreateProject() {
       publico: publico,
       clienteId: user?.cliente?.id,
     };
-    const resposta = await createProjeto(projeto);
+    const resposta = await updateProjeto(Project.id, projeto);
     console.log(resposta);
-    if(resposta.status === 201) {
-      toast.success("Projeto cadastrado com sucesso!");
+    if (resposta.status === 200) {
+      toast.success("Projeto atualizado com sucesso!");
       window.location.reload();
     }
-
   };
 
   return (
@@ -47,6 +47,7 @@ export function FormCreateProject() {
           <Input
             className="mt-1 focus-visible:ring-custom-green"
             onChange={(e) => setNome(e.target.value)}
+            value={nome}
           />
         </Label>
       </div>
@@ -57,6 +58,7 @@ export function FormCreateProject() {
             placeholder="Escreva sua descrição."
             className="mt-1 focus-visible:ring-custom-green"
             onChange={(e) => setDescricao(e.target.value)}
+            value={descricao}
           />
         </Label>
       </div>
@@ -83,15 +85,19 @@ export function FormCreateProject() {
       </div>
       <div className="flex justify-end gap-3 mt-4">
         <DialogClose>
-          <Button type="button" variant="secondary" className="py-2 px-4 text-base ">
+          <Button
+            type="button"
+            variant="secondary"
+            className="py-2 px-4 text-base "
+          >
             Fechar
           </Button>
           <Button
-          type="submit"
-          className="py-2 px-4 text-base bg-custom-blue text-white"
-        >
-          Salvar
-        </Button>
+            type="submit"
+            className="py-2 px-4 text-base bg-custom-blue text-white"
+          >
+            Salvar
+          </Button>
         </DialogClose>
       </div>
     </form>

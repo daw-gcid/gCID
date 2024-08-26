@@ -14,12 +14,6 @@ export class CreatePropostaDto {
   @IsString()
   message: string;
 
-  @IsNumber()
-  estimativaValor: number;
-
-  @IsNumber()
-  remetentType: number;
-
   @IsDate()
   @Type(() => Date)
   previsaoInicio: Date;

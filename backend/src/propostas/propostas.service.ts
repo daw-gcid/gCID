@@ -23,9 +23,11 @@ export class PropostasService {
   ) {}
 
   async create(
-    createPropostaDto: CreatePropostaDto,
-    originalPropostaId?: string,
+    createPropostaDto: CreatePropostaDto
   ) {
+
+    var proposta = this.propostaRepository.create(createPropostaDto);
+
     if (!createPropostaDto.clientId) {
       throw new BadRequestException('Id de Cliente não pode ser vazio!');
     }
@@ -38,10 +40,6 @@ export class PropostasService {
       throw new BadRequestException('A proposta deve conter algum projeto!');
     }
 
-    if (!createPropostaDto.remetentType) {
-      throw new BadRequestException('Informe quem está enviando a proposta!');
-    }
-
     const client = await this.clienteService.findOne(
       createPropostaDto.clientId,
     );
@@ -51,46 +49,15 @@ export class PropostasService {
     const project = await this.projetoService.findOne(
       createPropostaDto.projetoId,
     );
+    
+
 
     if (!client || !institute || !project) {
       throw new NotFoundException('Dados não encontrados no sistema!');
     }
-
-    let remetente: string = '';
-
-    if (createPropostaDto.remetentType == 1) {
-      remetente = client.id;
-    } else if (createPropostaDto.remetentType == 2) {
-      remetente = institute.id;
-    }
-
-    // Se houver uma proposta original, copiar suas informações
-    let originalProposta: Proposta | null = null;
-    if (originalPropostaId) {
-      originalProposta = await this.propostaRepository.findOne({
-        where: { id: originalPropostaId },
-        relations: ['cliente', 'instituto', 'projeto'],
-      });
-
-      if (!originalProposta) {
-        throw new NotFoundException('Proposta original não encontrada');
-      }
-    }
-
-    const proposta = this.propostaRepository.create({
-      instituto: institute,
-      projeto: project,
-      cliente: client,
-      remetente: remetente,
-      status: originalProposta ? 1 : 0,
-      message: createPropostaDto.message || originalProposta?.message,
-      estimativaValor:
-        createPropostaDto.estimativaValor || originalProposta?.estimativaValor,
-      previsaoInicio:
-        createPropostaDto.previsaoInicio || originalProposta?.previsaoInicio,
-      previsaoFim:
-        createPropostaDto.previsaoFim || originalProposta?.previsaoFim,
-    });
+    proposta.cliente = client;
+    proposta.instituto = institute;
+    proposta.projeto = project;
 
     return await this.propostaRepository.save(proposta);
   }
@@ -161,20 +128,12 @@ export class PropostasService {
     }
 
     const propostas = await this.propostaRepository.find({
-      where: { cliente: { id: id }, aceito: false },
+      where: { cliente: { id: id } },
       relations: ['cliente', 'projeto', 'instituto'],
       order: { dataCriacao: 'DESC' },
     });
 
-    const propostasUnicas = new Map<string, Proposta>();
-
-    for (const proposta of propostas) {
-      if (!propostasUnicas.has(proposta.projeto.id)) {
-        propostasUnicas.set(proposta.projeto.id, proposta);
-      }
-    }
-
-    return Array.from(propostasUnicas.values());
+    return propostas;
   }
 
   findOne(id: string) {
@@ -223,21 +182,6 @@ export class PropostasService {
       proposta.projeto = project;
     }
 
-    if (updatePropostaDto.remetentType) {
-      let remetente: string;
-      if (updatePropostaDto.remetentType == 1) {
-        remetente = proposta.cliente.id;
-      } else if (updatePropostaDto.remetentType == 2) {
-        remetente = proposta.instituto.id;
-      } else {
-        throw new BadRequestException('Tipo de remetente inválido');
-      }
-      proposta.remetente = remetente;
-    }
-
-    if (updatePropostaDto.estimativaValor) {
-      proposta.estimativaValor = updatePropostaDto.estimativaValor;
-    }
 
     if (updatePropostaDto.previsaoInicio) {
       proposta.previsaoInicio = updatePropostaDto.previsaoInicio;

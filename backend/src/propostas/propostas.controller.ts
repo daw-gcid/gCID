@@ -20,14 +20,6 @@ export class PropostasController {
     return this.propostasService.create(createPropostaDto);
   }
 
-  @Post('/:id/counter')
-  createCounterProposal(
-    @Param('id') id: string,
-    @Body() createPropostaDto: CreatePropostaDto,
-  ) {
-    return this.propostasService.create(createPropostaDto, id);
-  }
-
   @Post('/accept/:id')
   acceptProposal(@Param('id') id: string) {
     return this.propostasService.acceptProposal(id);

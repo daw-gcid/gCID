@@ -31,7 +31,7 @@ function getStatusDescription(status: number): string {
   ("");
 }
 
-export function PropostasCard({ proj }: { proj: Proposta }) {
+export function PropostasCard({ proposta }: { proposta: Proposta }) {
   const accept = useMutation({
     mutationKey: ["accept-proposal"],
     mutationFn: acceptProposal,
@@ -42,18 +42,11 @@ export function PropostasCard({ proj }: { proj: Proposta }) {
   const [openDialog, setOpenDialog] = React.useState(false);
 
   const handleAccept = () => {
-    console.log("Proposta aceita:", proj.projeto.nome);
+    console.log("Proposta aceita:", proposta.projeto.nome);
   };
 
   const handleReject = () => {
-    console.log("Proposta rejeitada:", proj.projeto.nome);
-  };
-
-  const formatarValor = (valor: number) => {
-    return valor.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
+    console.log("Proposta rejeitada:", proposta.projeto.nome);
   };
 
   function formatDate(date: Date): string {
@@ -71,14 +64,14 @@ export function PropostasCard({ proj }: { proj: Proposta }) {
         <div className="flex items-center justify-between">
           <div className="flex-1 flex flex-col items-start w-full">
             <CardTitle className="text-xl font-semibold mb-2 text-gray-800 truncate w-full">
-              {proj?.projeto?.nome.length > 20
-                ? proj?.projeto?.nome.substring(0, 20) + "..."
-                : proj?.projeto?.nome}
+              {proposta?.projeto?.nome.length > 20
+                ? proposta?.projeto?.nome.substring(0, 20) + "..."
+                : proposta?.projeto?.nome}
             </CardTitle>
             <CardDescription className="text-sm text-gray-700 mb-3 truncate w-full">
-              {proj?.descricao?.length > 27
-                ? proj?.descricao?.substring(0, 27) + "..."
-                : proj?.descricao}
+              {proposta?.descricao?.length > 27
+                ? proposta?.descricao?.substring(0, 27) + "..."
+                : proposta?.descricao}
             </CardDescription>
             {/* <p className="text-sm text-gray-500">
                             Status: <span className="font-medium text-gray-800">{getStatusDescription(proj.status)}</span>
@@ -86,7 +79,7 @@ export function PropostasCard({ proj }: { proj: Proposta }) {
             <p className="text-sm text-gray-500">
               Instituto:{" "}
               <span className="font-medium text-gray-800">
-                {proj.instituto.nome}
+                {proposta.instituto.nome}
               </span>
             </p>
           </div>
@@ -105,10 +98,10 @@ export function PropostasCard({ proj }: { proj: Proposta }) {
                 <DialogContent className="sm:max-w-lg sm:max-h-[80vh] overflow-y-auto bg-white shadow-lg p-6 rounded-lg">
                   <DialogHeader>
                     <DialogTitle className="text-2xl font-semibold mb-4">
-                      {proj?.projeto?.nome}
+                      {proposta?.projeto?.nome} - {proposta?.cliente.nome}
                     </DialogTitle>
                     <DialogDescription className="text-base text-muted-foreground mb-6">
-                      {proj?.descricao}
+                      {proposta?.descricao}
                       <br />
                     </DialogDescription>
                   </DialogHeader>
@@ -117,60 +110,35 @@ export function PropostasCard({ proj }: { proj: Proposta }) {
                     <div className="flex items-center">
                       <Label className="font-medium w-1/3">Privacidade:</Label>
                       <p className="w-2/3">
-                        {proj?.projeto?.publico ? "Público" : "Privado"}
+                        {proposta?.projeto?.publico ? "Público" : "Privado"}
                       </p>
                     </div>
                     <div className="flex items-center">
                       <Label className="font-medium w-1/3">Status:</Label>
                       <p className="w-2/3">
-                        {getStatusDescription(proj?.projeto?.status)}
+                        {getStatusDescription(proposta?.projeto?.status)}
                       </p>
                     </div>
                     <div className="flex items-center">
                       <Label className="font-medium w-1/3">Instituto:</Label>
-                      <p className="w-2/3">{proj.instituto.nome}</p>
+                      <p className="w-2/3">{proposta.instituto.nome}</p>
                     </div>
                     <div className="flex items-center">
                       <Label className="font-medium w-1/3">
                         Previsão de Início:
                       </Label>
-                      <p className="w-2/3">{formatDate(proj.previsaoInicio)}</p>
+                      <p className="w-2/3">{formatDate(proposta.previsaoInicio)}</p>
                     </div>
                     <div className="flex items-center">
                       <Label className="font-medium w-1/3">
                         Previsão de Conclusão:
                       </Label>
-                      <p className="w-2/3">{formatDate(proj.previsaoFim)}</p>
-                    </div>
-                    <div className="flex items-center">
-                      <Label className="font-medium w-1/3">
-                        Estimativa de Valor:
-                      </Label>
-                      <p className="w-2/3">
-                        {formatarValor(proj.estimativaValor)}
-                      </p>
+                      <p className="w-2/3">{formatDate(proposta.previsaoFim)}</p>
                     </div>
                     <div className="flex">
                       <Label className="font-medium w-1/3">Mensagem:</Label>
-                      <p className="w-2/3">{proj.message}</p>
+                      <p className="w-2/3">{proposta.message}</p>
                     </div>
-                  </div>
-
-                  <div className="flex justify-end mt-6 space-x-3">
-                    <Button
-                      onClick={() => accept.mutate(proj.id)}
-                      className="bg-green-600 hover:bg-green-700 text-white rounded-md flex items-center px-4 py-2"
-                    >
-                      <Check className="mr-2" />
-                      Aceitar
-                    </Button>
-                    <Button
-                      onClick={() => setOpenDialog(false)}
-                      className="bg-red-600 hover:bg-red-700 text-white rounded-md flex items-center px-4 py-2"
-                    >
-                      <X className="mr-2" />
-                      Rejeitar
-                    </Button>
                   </div>
                 </DialogContent>
               )}
@@ -179,5 +147,47 @@ export function PropostasCard({ proj }: { proj: Proposta }) {
         </div>
       </Card>
     </div>
+  );
+}
+
+// EnviadoCard.tsx
+export function EnviadoCard({ proj }: { proj: Proposta }) {
+  return (
+    <>
+    <PropostasCard proposta={proj}/>
+    <br/>
+    </>
+
+  );
+}
+
+// RespondidoCard.tsx
+export function RespondidoCard({ proj }: { proj: Proposta }) {
+  return (
+    
+    <>
+    <PropostasCard proposta={proj}/>
+    <br/>
+    </>
+  );
+}
+
+// AceitoCard.tsx
+export function AceitoCard({ proj }: { proj: Proposta }) {
+  return (
+    <>
+    <PropostasCard proposta={proj}/>
+    <br/>
+    </>
+  );
+}
+
+// RecusadoCard.tsx
+export function RecusadoCard({ proj }: { proj: Proposta }) {
+  return (
+    <>
+    <PropostasCard proposta={proj}/>
+    <br/>
+    </>
   );
 }

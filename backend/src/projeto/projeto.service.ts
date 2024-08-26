@@ -85,6 +85,22 @@ export class ProjetoService {
     return await this.projetoRepository.find();
   }
 
+  async updateBasic(id: string, createProjetoDto: CreateProjetoDto) {
+    const proj = await this.projetoRepository.findOne({
+      where: { id }
+    });
+
+    if (!proj) {
+      throw new NotFoundException('Projeto não encontrado');
+    }
+
+    delete createProjetoDto.clienteId;
+
+
+    return await this.projetoRepository.update(id, createProjetoDto);
+
+  }
+
   async update(id: string, updateProjetoDto: UpdateProjetoDto) {
     const proj = await this.projetoRepository.findOne({
       where: { id },
@@ -93,6 +109,7 @@ export class ProjetoService {
     if (!proj) {
       throw new NotFoundException('Projeto não encontrado');
     }
+
 
     if (updateProjetoDto.clienteId) {
       delete updateProjetoDto.clienteId;

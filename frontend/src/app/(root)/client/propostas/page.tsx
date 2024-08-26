@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { ProjectsSkeleton } from "../projetos/components/ProjectSkeleton";
 import { PropostasComponentsManager } from "./components/ComponentsManager";
 
-export default function ProjectsPage() {
+export default function ProposalPage() {
   const { user } = useContext(AuthContext);
   const [isUserLoading, setIsUserLoading] = useState(true);
 
@@ -23,13 +23,11 @@ export default function ProjectsPage() {
   });
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-2 items-center">
+    <div className="h-screen">
+      <div>
         <h1 className="text-2xl font-semibold">Propostas</h1>
       </div>
-      <div>
         {isUserLoading ? <ProjectsSkeleton /> : <PropostasComponentsManager />}
-      </div>
     </div>
   );
 }

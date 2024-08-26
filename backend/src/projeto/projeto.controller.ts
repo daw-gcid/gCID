@@ -41,8 +41,8 @@ export class ProjetoController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjetoDto: UpdateProjetoDto) {
-    return this.projetoService.update(id, updateProjetoDto);
+  update(@Param('id') id: string, @Body() updateProjetoDto: CreateProjetoDto) {
+    return this.projetoService.updateBasic(id, updateProjetoDto);
   }
 
   @Delete(':id')

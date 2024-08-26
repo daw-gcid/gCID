@@ -1,8 +1,8 @@
 import { ProjectsSkeleton } from "../../projetos/components/ProjectSkeleton";
-import { PropostasList } from "./Temp";
+import { PropostasList } from "./PropostasList";
 import { NoProjects } from "../../projetos/components/NoProjects";
 import { useQueryClient } from "@tanstack/react-query";
-import { Project } from "../../projetos/components/ComponentsManager";
+import  { Project }  from "../../projetos/components/ComponentsManager";
 import { Cliente, Instituto } from "@/src/context/authContext";
 
 export interface Proposta {
@@ -16,6 +16,7 @@ export interface Proposta {
   previsaoFim: Date;
   cliente: Cliente;
   instituto: Instituto;
+  status: number;
 }
 
 function convertToDateWithoutTimezone(date: string | Date): Date {
@@ -44,9 +45,7 @@ export function PropostasComponentsManager() {
     return <ProjectsSkeleton />;
   }
 
-  if (isFetched && proposals && proposals.length > 0) {
+  if (isFetched && proposals) {
     return <PropostasList proj={proposals} />;
   }
-
-  return <NoProjects />;
 }
