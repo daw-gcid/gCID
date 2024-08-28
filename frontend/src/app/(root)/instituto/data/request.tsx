@@ -24,8 +24,14 @@ export async function getProposals(user: User) {
   return response.data;
 }
 
-export async function acceptProposal(id: string) {
-  const response = await api.post(`/propostas/accept/${id}`);
+export async function counterProposta(id: string ,counter: any) {
+  const response = await api.post(`/propostas/counter/${id}`, counter);
+  
+  return response;
+}
+
+export async function updateStatus(id: string, status: number) {
+  const response = await api.post(`/projeto/status/${id}/${status}`);
 
   return response;
 }

@@ -5,6 +5,7 @@ import { AuthContext } from "@/src/context/authContext";
 import { useContext, useEffect, useState } from "react";
 import { ProjectsSkeleton } from "../projetos/components/ProjectSkeleton";
 import { PropostasComponentsManager } from "./components/ComponentsManager";
+import { PropostasListSkeleton } from "./components/ProposeSkeleton";
 
 export default function ProposalPage() {
   const { user } = useContext(AuthContext);
@@ -27,8 +28,8 @@ export default function ProposalPage() {
       <div className="flex gap-2 items-center">
         <h1 className="text-2xl font-semibold">Propostas</h1>
       </div>
-      <div>
-        {isUserLoading ? <ProjectsSkeleton /> : <PropostasComponentsManager />}
+      <div className="h-screen">
+        {isUserLoading ? <PropostasListSkeleton /> : <PropostasComponentsManager />}
       </div>
     </div>
   );

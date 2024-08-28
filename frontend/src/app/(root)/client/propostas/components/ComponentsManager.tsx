@@ -1,9 +1,8 @@
+import { Cliente, Instituto } from "@/src/context/authContext";
+import { useQueryClient } from "@tanstack/react-query";
+import { Project } from "../../projetos/components/ComponentsManager";
 import { ProjectsSkeleton } from "../../projetos/components/ProjectSkeleton";
 import { PropostasList } from "./PropostasList";
-import { NoProjects } from "../../projetos/components/NoProjects";
-import { useQueryClient } from "@tanstack/react-query";
-import  { Project }  from "../../projetos/components/ComponentsManager";
-import { Cliente, Instituto } from "@/src/context/authContext";
 
 export interface Proposta {
   id: string;
@@ -11,6 +10,7 @@ export interface Proposta {
   descricao: string;
   aceito: boolean;
   message: string;
+  messageResposta: string;
   estimativaValor: number;
   previsaoInicio: Date;
   previsaoFim: Date;

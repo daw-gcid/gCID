@@ -7,11 +7,11 @@ export const clientMenu: UserOptions[] = [
     href: "/client/projetos",
     icon: Lightbulb,
   },
-  {
-    title: "Dashboard",
-    href: "/client/dashboard",
-    icon: LineChart,
-  },
+  // {
+  //   title: "Dashboard",
+  //   href: "/client/dashboard",
+  //   icon: LineChart,
+  // },
   {
     title: "Propostas",
     href: "/client/propostas",

@@ -45,6 +45,11 @@ export class ProjetoController {
     return this.projetoService.updateBasic(id, updateProjetoDto);
   }
 
+  @Post('status/:id/:status')
+  updateStatus(@Param('id') id: string, @Param('status') status: number) {
+    return this.projetoService.updateStatus(id, status);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.projetoService.remove(id);

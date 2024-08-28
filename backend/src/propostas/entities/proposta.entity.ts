@@ -37,6 +37,9 @@ export class Proposta {
   message: string;
 
   @Column({ nullable: true })
+  messageResposta: string;
+
+  @Column({ nullable: true })
   estimativaValor: number;
 
   @ManyToOne(() => Cliente, (cliente) => cliente.propostas, { nullable: false })

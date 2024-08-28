@@ -10,6 +10,7 @@ import {
 import { PropostasService } from './propostas.service';
 import { CreatePropostaDto } from './dto/create-proposta.dto';
 import { UpdatePropostaDto } from './dto/update-proposta.dto';
+import { CounterPropostaDto } from './dto/counter-proposta.dto';
 
 @Controller('propostas')
 export class PropostasController {
@@ -20,9 +21,22 @@ export class PropostasController {
     return this.propostasService.create(createPropostaDto);
   }
 
+  @Post('/counter/:id')
+  counter(
+    @Param('id') id: string,
+    @Body() counterProposta: CounterPropostaDto,
+  ) {
+    return this.propostasService.counter(id, counterProposta);
+  }
+
   @Post('/accept/:id')
   acceptProposal(@Param('id') id: string) {
     return this.propostasService.acceptProposal(id);
+  }
+
+  @Post('/refuse/:id')
+  refuseProposal(@Param('id') id: string) {
+    return this.propostasService.rejectProposal(id);
   }
 
   @Get('institute/:id')

@@ -23,7 +23,7 @@ export default function ProposalPage() {
   });
 
   return (
-    <div className="h-screen">
+    <div className="flex flex-col gap-4 h-screen">
       <div>
         <h1 className="text-2xl font-semibold">Propostas</h1>
       </div>

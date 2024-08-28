@@ -21,6 +21,8 @@ export function SidebarMenu({ responsive }: { responsive: boolean }) {
   const { user } = useContext(AuthContext);
   const userType = user?.userType;
 
+  if(userType == undefined) return null;
+
   const currentMenu: UserOptions[] =
     userType == 1 ? clientMenu : userType == 2 ? instituteMenu : talentMenu;
 

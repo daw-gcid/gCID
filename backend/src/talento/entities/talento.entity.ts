@@ -9,6 +9,7 @@ import {
 import { Experiencia } from './experiencia.entity';
 import { Idioma } from './idioma.entity';
 import { User } from 'src/user/entities/user.entity';
+import { EquipeTalento } from 'src/equipe/entities/equipeTalento.entity';
 
 @Entity()
 export class Talento {
@@ -86,4 +87,7 @@ export class Talento {
   @OneToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
+
+  @OneToMany(() => EquipeTalento, (equipeTalento) => equipeTalento.talento, { nullable: true })
+  equipeTalentos?: EquipeTalento[];
 }

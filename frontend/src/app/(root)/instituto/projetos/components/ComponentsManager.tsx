@@ -4,6 +4,7 @@ import { NoProjects } from "./NoProjects";
 import { useQueryClient } from "@tanstack/react-query";
 
 export interface Project {
+  id: string
   nome: string;
   descricao: string;
   publico: boolean;

@@ -9,6 +9,8 @@ RUN npm install
 
 COPY . .
 
+RUN chmod -R 755 /app
+
 RUN npm rebuild bcrypt --build-from-source
 
 

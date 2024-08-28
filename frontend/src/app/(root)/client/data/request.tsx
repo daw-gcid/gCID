@@ -46,6 +46,12 @@ export async function acceptProposal(id: string) {
   return response;
 }
 
+export async function refuseProposal(id: string) {
+  const response = await api.post(`/propostas/refuse/${id}`);
+
+  return response;
+}
+
 export async function getInstitutes() {
   const response = await api.get("/instituto");
 

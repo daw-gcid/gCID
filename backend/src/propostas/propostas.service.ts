@@ -11,6 +11,7 @@ import { Repository } from 'typeorm';
 import { ProjetoService } from 'src/projeto/projeto.service';
 import { ClienteService } from 'src/cliente/cliente.service';
 import { InstitutoService } from 'src/instituto/instituto.service';
+import { CounterPropostaDto } from './dto/counter-proposta.dto';
 
 @Injectable()
 export class PropostasService {
@@ -22,11 +23,8 @@ export class PropostasService {
     private institutoService: InstitutoService,
   ) {}
 
-  async create(
-    createPropostaDto: CreatePropostaDto
-  ) {
-
-    var proposta = this.propostaRepository.create(createPropostaDto);
+  async create(createPropostaDto: CreatePropostaDto) {
+    const proposta = this.propostaRepository.create(createPropostaDto);
 
     if (!createPropostaDto.clientId) {
       throw new BadRequestException('Id de Cliente não pode ser vazio!');
@@ -49,8 +47,6 @@ export class PropostasService {
     const project = await this.projetoService.findOne(
       createPropostaDto.projetoId,
     );
-    
-
 
     if (!client || !institute || !project) {
       throw new NotFoundException('Dados não encontrados no sistema!');
@@ -182,7 +178,6 @@ export class PropostasService {
       proposta.projeto = project;
     }
 
-
     if (updatePropostaDto.previsaoInicio) {
       proposta.previsaoInicio = updatePropostaDto.previsaoInicio;
     }
@@ -233,8 +228,9 @@ export class PropostasService {
       relatedProposta.dataExclusao = new Date(); // Marcar como deletado (soft delete)
       await this.propostaRepository.save(relatedProposta);
     }
-
+    console.log(proposta.instituto);
     proposta.aceito = true;
+    proposta.status = 2;
 
     projeto.instituto = proposta.instituto;
     projeto.estimativaValor = proposta.estimativaValor;
@@ -242,6 +238,7 @@ export class PropostasService {
     projeto.dtFim = proposta.previsaoFim;
 
     await this.projetoService.update(proposta.projeto.id, {
+      institutoId: proposta.instituto.id,
       estimativaValor: proposta.estimativaValor,
       dtInicio: proposta.previsaoInicio,
       dtFim: proposta.previsaoFim,
@@ -250,5 +247,46 @@ export class PropostasService {
     await this.propostaRepository.save(proposta);
 
     return `A proposta entre o instituto ${proposta.instituto.nome} e o cliente ${proposta.cliente.nome} foi aceita!`;
+  }
+
+  async counter(id: string, counterProposta: CounterPropostaDto) {
+    const proposta = await this.propostaRepository.findOne({
+      where: { id },
+      relations: ['projeto', 'cliente', 'instituto'],
+    });
+
+    if (!proposta) {
+      throw new NotFoundException(`Proposta com id ${id} não encontrada`);
+    }
+    proposta.status = 1;
+    proposta.messageResposta = counterProposta.messageResposta;
+    proposta.estimativaValor = counterProposta.estimativaValor;
+
+    await this.propostaRepository.update(id, proposta);
+
+    return `A proposta entre o instituto ${proposta.instituto.nome} e o cliente ${proposta.cliente.nome} foi respondida pelo instituto!`;
+  }
+
+  async rejectProposal(id: string) {
+    const proposta = await this.propostaRepository.findOne({
+      where: { id },
+      relations: ['projeto', 'cliente', 'instituto'],
+    });
+
+    if (!proposta) {
+      throw new NotFoundException(`Proposta com id ${id} não encontrada`);
+    }
+
+    if (!proposta.instituto.id) {
+      throw new NotFoundException(
+        'A Proposta não está associada a nenhum instituto',
+      );
+    }
+
+    proposta.status = 3;
+
+    await this.propostaRepository.save(proposta);
+
+    return `A proposta entre o instituto ${proposta.instituto.nome} e o cliente ${proposta.cliente.nome} foi rejeittada!`;
   }
 }

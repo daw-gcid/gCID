@@ -1,5 +1,6 @@
 import { Area } from 'src/area/entities/area.entity';
 import { Cliente } from 'src/cliente/entities/cliente.entity';
+import { Equipe } from 'src/equipe/entities/equipe.entity';
 import { Instituto } from 'src/instituto/entities/instituto.entity';
 import { Proposta } from 'src/propostas/entities/proposta.entity';
 import {
@@ -77,4 +78,7 @@ export class Projeto {
 
   @Column({ name: 'projdtinicio', nullable: true })
   dtInicio: Date;
+
+  @OneToMany(() => Equipe, (equipe) => equipe.projeto)
+  equipes: Equipe[];
 }

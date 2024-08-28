@@ -14,8 +14,13 @@ import {
 import { Button } from "@/src/components/ui/button";
 import { CircleEllipsis, PenIcon } from "lucide-react";
 import { Label } from "@/src/components/ui/label";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { updateStatus } from "../../data/request";
+
 
 interface Project {
+  id: string;
   nome: string;
   descricao: string;
   publico: boolean;
@@ -45,8 +50,23 @@ function getStatusDescription(status: number): string {
 
 export function ProjectsList({ proj }: { proj: Project[] }) {
   const { user } = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
+
 
   if (!user) return null;
+
+  const HandleUpdateStatus = (id: string, status: number) => async () => {
+    const resposta = await updateStatus(id, status);
+    if (resposta.status === 201) {
+      toast.success("Status atualizado com sucesso");
+      window.location.reload();
+    } else {
+      toast.error("Erro ao atualizar status");
+      window.location.reload();
+
+    }
+    setOpen(false);
+  };
 
   return (
     <div>
@@ -98,7 +118,7 @@ export function ProjectsList({ proj }: { proj: Project[] }) {
                 </DialogContent>
               </Dialog>
               {/* Botão de controlar projeto */}
-              <Dialog>
+              <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                   <Button className="bg-transparent border-none shadow-none p-0 hover:none">
                     <PenIcon className="w-6 h-6 text-custom-green" />
@@ -124,6 +144,22 @@ export function ProjectsList({ proj }: { proj: Project[] }) {
                       <p>{getStatusDescription(project.status)}</p>
                     </div>
                   </div>
+                  {project.status === 0 && (
+                    <Button
+                      onClick={HandleUpdateStatus(project.id, 1)}
+                      className="bg-custom-blue text-white mt-4"
+                    >
+                      Iniciar Projeto
+                    </Button>
+                  )}
+                  {project.status === 1 && (
+                    <Button
+                      onClick={HandleUpdateStatus(project.id, 2)}
+                      className="bg-custom-green text-white mt-4"
+                    >
+                      Finalizar Projeto
+                    </Button>
+                  )}
                 </DialogContent>
               </Dialog>
             </div>

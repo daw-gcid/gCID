@@ -9,6 +9,7 @@ import { ProjetoModule } from './projeto/projeto.module';
 import { AreaModule } from './area/area.module';
 import { AuthModule } from './auth/auth.module';
 import { PropostasModule } from './propostas/propostas.module';
+import { EquipeModule } from './equipe/equipe.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PropostasModule } from './propostas/propostas.module';
     AreaModule,
     AuthModule,
     PropostasModule,
+    EquipeModule,
   ],
   controllers: [],
   providers: [],
