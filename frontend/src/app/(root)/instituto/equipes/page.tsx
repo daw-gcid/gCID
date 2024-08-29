@@ -1,5 +1,5 @@
 "use client";
-import { getProjects, getTalents } from "../data/request";
+import { getEquips, getProjects, getTalents } from "../data/request";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/src/components/ui/button";
 import { CirclePlus } from "lucide-react";
@@ -34,7 +34,7 @@ export default function TeamsPage() {
 
   const { data: equips, isLoading: isEquipsLoading } = useQuery({
     queryKey: ["get-equips"],
-    queryFn: () => getEquips(user!),
+    queryFn: () => getEquips(),
     enabled: !!user,
   });
 

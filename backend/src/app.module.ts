@@ -27,7 +27,6 @@ import { EquipeModule } from './equipe/equipe.module';
       entities: [`${__dirname}/**/*.entity{.js, .ts}`],
       migrations: [`${__dirname}/migrations/{.ts, *.js}`],
       migrationsRun: true,
-      synchronize: true,
     }),
     UserModule,
     TalentoModule,
