@@ -222,7 +222,7 @@ export function RecebidoCard({ proposta }: { proposta: Proposta }) {
                       {proposta?.projeto?.nome}
                     </DialogTitle>
                     <DialogDescription className="text-base text-muted-foreground mb-6">
-                      {proposta?.descricao}
+                      {proposta?.projeto?.descricao}
                       <br />
                     </DialogDescription>
                   </DialogHeader>

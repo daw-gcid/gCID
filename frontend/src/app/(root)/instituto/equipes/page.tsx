@@ -15,7 +15,7 @@ import { AuthContext, Talento } from "@/src/context/authContext";
 import { useContext, useEffect, useState } from "react";
 import { ComponentsManager } from "./components/ComponentsManager";
 import { FormCreateTeam } from "./components/FormCreateTeam";
-import { ProjectsSkeleton } from "./components/ProjectSkeleton";
+import { ProjectsSkeleton } from "../projetos/components/ProjectSkeleton";
 export default function TeamsPage() {
   const { user } = useContext(AuthContext);
   const [isUserLoading, setIsUserLoading] = useState(true);

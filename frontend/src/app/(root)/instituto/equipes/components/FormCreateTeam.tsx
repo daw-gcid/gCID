@@ -1,6 +1,6 @@
 import { Button } from "@/src/components/ui/button";
 import { Talento } from "@/src/context/authContext";
-import { Project } from "./ComponentsManager";
+import { Project } from "../../projetos/components/ComponentsManager";
 
 export function FormCreateTeam({
   projects,

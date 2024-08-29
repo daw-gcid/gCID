@@ -42,6 +42,10 @@ Isso iniciará os contêineres do frontend, backend e banco de dados em segundo 
 
 Agora, você pode acessar o frontend em [http://localhost:80](http://localhost:80).
 
+
+Senhas e usuarios ja cadastrados de exemplo encontram-se na pasta root do projeto, com o nome Senhas_e_users.txt
+
+
 ## Comandos Úteis do Docker Compose
 
 - Parar os contêineres em execução:

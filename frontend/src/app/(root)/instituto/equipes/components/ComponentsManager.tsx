@@ -1,15 +1,20 @@
-import { ProjectsSkeleton } from "./ProjectSkeleton";
-import { ProjectsList } from "./Temp";
-import { NoProjects } from "./NoProjects";
 import { useQueryClient } from "@tanstack/react-query";
+import { ProjectsSkeleton } from "../../../talento/projetos/components/ProjectSkeleton";
+import { ProjectsList } from "../../projetos/components/ProjectList";
+import { NoProjects } from "../../projetos/components/NoProjects";
 
-export interface Project {
-  id: number;
+interface Project {
+  id: string;
   nome: string;
   descricao: string;
   publico: boolean;
   status: number;
-  estimativaValor: number;
+  cliente: Cliente;
+}
+
+interface Cliente {
+  nome: string;
+  email: string;
 }
 
 export function ComponentsManager() {

@@ -257,6 +257,10 @@ export function RespondidoCard({ proposta }: { proposta: Proposta }) {
                       <Label className="font-medium w-1/3">Mensagem Recebida:</Label>
                       <p className="w-2/3">{proposta.messageResposta}</p>
                     </div>
+                    <div className="flex">
+                      <Label className="font-medium w-1/3">Mensagem Recebida:</Label>
+                      <p className="w-2/3">{proposta.estimativaValor}</p>
+                    </div>
                   </div>
                   <div className="flex justify-end mt-6 space-x-3">
                     <Button

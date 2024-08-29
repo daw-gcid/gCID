@@ -1,0 +1,30 @@
+Institutos: 
+
+email: eldorado@email.com
+user: eldorado
+senha: senha
+
+
+email: sidia@email.com
+user: sidia
+senha: senha
+
+email: icts@email.com
+user: icts
+senha: icts
+
+
+Cliente: 
+
+email: denso@email.com
+user: denso
+senha: senha
+
+
+talento: 
+
+email: aluno@email.com
+user: aluno
+senha: senha
+
+Sugestão: interagir com os fluxos de projetos e institutos existentes, deixamos o fluxo pendente de aprovação ou resposta para justamente você poder completar o fluxo como um usuário de um instituto ou cliente. 

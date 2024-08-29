@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -26,6 +30,7 @@ export class ClienteService {
     cliente.user = user;
 
     user.status = 1;
+    delete user.password;
 
     try {
       const userSaved = await this.userService.update(user.id, user);

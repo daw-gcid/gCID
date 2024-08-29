@@ -5,7 +5,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "80:3000" # ou qualquer outra porta usada pelo frontend
+      - "80:3000"
     environment:
       NODE_ENV: production
     volumes:
@@ -32,6 +32,10 @@ services:
       - MYSQL_PASSWORD=gcid
     ports:
       - 33069:3306
+    volumes:
+      - ./db_data:/var/lib/mysql
+      - ./initdb:/docker-entrypoint-initdb.d
+    restart: always
 
   redis:
     image: redis
