@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Project } from "../../projetos/components/ComponentsManager";
 import { ProjectsSkeleton } from "../../projetos/components/ProjectSkeleton";
 import { PropostasList } from "./PropostasList";
+import { PropostasListSkeleton } from "../../../instituto/propostas/components/ProposeSkeleton";
 
 export interface Proposta {
   id: string;
@@ -42,7 +43,7 @@ export function PropostasComponentsManager() {
     : [];
 
   if (isLoading) {
-    return <ProjectsSkeleton />;
+    return <PropostasListSkeleton />;
   }
 
   if (isFetched && proposals) {

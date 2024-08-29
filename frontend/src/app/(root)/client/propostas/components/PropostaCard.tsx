@@ -381,6 +381,10 @@ export function AceitoCard({ proposta }: { proposta: Proposta }) {
                       <Label className="font-medium w-1/3">Mensagem Recebida:</Label>
                       <p className="w-2/3">{proposta.messageResposta}</p>
                     </div>
+                    <div className="flex">
+                      <Label className="font-medium w-1/3">Valor estimado:</Label>
+                      <p className="w-2/3">{(`R$ ${proposta.estimativaValor},00`)}</p>
+                    </div>
                   </div>
                 </DialogContent>
               )}

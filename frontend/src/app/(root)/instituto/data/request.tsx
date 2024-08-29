@@ -35,3 +35,15 @@ export async function updateStatus(id: string, status: number) {
 
   return response;
 }
+
+export async function getTalents(){
+  const response = await api.get("/talento")
+
+  return response;
+}
+
+export async function getEquips(){
+  const response = await api.get("/equipe")
+
+  return response;
+}
