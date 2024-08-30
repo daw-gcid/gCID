@@ -1,5 +1,6 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { zen_dots } from "../fonts";
 import { Bell, Menu, Search } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
@@ -15,16 +16,32 @@ import {
 } from "@/src/components/ui/card";
 
 import GLogo from "@/src/components/gLogo";
+import TourGuide from "@/src/components/utils/TourGuide";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [startTour, setStartTour] = useState(true);
+
+  const handleTourEnd = () => {
+    setStartTour(false);
+  };
+
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] relative">
+      {startTour && (
+        <div className="absolute w-full">
+          <TourGuide
+            start={startTour}
+            setStartTour={setStartTour}
+            onTourEnd={handleTourEnd}
+          />
+        </div>
+      )}
       <div className="hidden border-r bg-muted/40 md:block">
-        <div className="flex h-full max-h-screen flex-col gap-2">
+        <div id="step-1" className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link
               href="/"

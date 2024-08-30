@@ -21,18 +21,19 @@ export function SidebarMenu({ responsive }: { responsive: boolean }) {
   const { user } = useContext(AuthContext);
   const userType = user?.userType;
 
-  if(userType == undefined) return null;
+  if (userType == undefined) return null;
 
   const currentMenu: UserOptions[] =
     userType == 1 ? clientMenu : userType == 2 ? instituteMenu : talentMenu;
 
-    // console.log(window.location.href);
+  // console.log(window.location.href);
 
   return (
     <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
       {currentMenu.map((item, idx) => {
         return (
           <Link
+            id={`step-${idx + 2}`}
             key={idx}
             href={item.href}
             className={
@@ -56,7 +57,12 @@ export function DropdownUserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="icon" className="rounded-full">
+        <Button
+          variant="secondary"
+          size="icon"
+          className="rounded-full"
+          id="step-6"
+        >
           <CircleUser className="h-5 w-5" />
           <span className="sr-only">Toggle Dropdown</span>
         </Button>

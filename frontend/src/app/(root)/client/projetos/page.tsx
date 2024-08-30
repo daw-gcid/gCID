@@ -16,6 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import { ComponentsManager } from "./components/ComponentsManager";
 import { ProjectsSkeleton } from "./components/ProjectSkeleton";
 import { FormCreateProject } from "./components/FormCreateProject";
+import ProjectTourGuide from "@/src/components/utils/ProjectsTourGuide";
 
 export default function ProjectsPage() {
   const { user } = useContext(AuthContext);
@@ -39,8 +40,23 @@ export default function ProjectsPage() {
     enabled: !!user,
   });
 
+  const [startTour, setStartTour] = useState(true);
+
+  const handleTourEnd = () => {
+    setStartTour(false);
+  };
+
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 relative">
+      {startTour && (
+        <div className="absolute w-full">
+          <ProjectTourGuide
+            start={startTour}
+            setStartTour={setStartTour}
+            onTourEnd={handleTourEnd}
+          />
+        </div>
+      )}
       <div className="flex gap-2 items-center">
         <h1 className="text-2xl font-semibold">Projetos</h1>
         <Dialog>
@@ -48,7 +64,7 @@ export default function ProjectsPage() {
             <Button
               size="icon"
               variant="secondary"
-              className="rounded-full text-custom-green bg-transparent"
+              className="rounded-full text-custom-green bg-transparent proj-1"
             >
               <CirclePlus className="w-6 h-6" />
             </Button>
