@@ -137,7 +137,7 @@ export function ProjectCard({ proj }: { proj: Project }) {
   }));
 
   return (
-    <div>
+    <div >
       <Card className="relative p-4 border-black border-solid">
         <div className="flex items-center justify-between">
           <div className="flex-1 flex flex-col items-start w-full">
@@ -164,7 +164,7 @@ export function ProjectCard({ proj }: { proj: Project }) {
               <form action="#">
                 <Popover key={"pop1"} open={open} onOpenChange={setOpen}>
                   <PopoverTrigger asChild>
-                    <Button className="bg-transparent border-none shadow-none p-0 hover:none">
+                    <Button className="bg-transparent border-none shadow-none p-0 hover:none pcard-2">
                       <Send className="w-6 h-6 text-custom-green" />
                     </Button>
                   </PopoverTrigger>
@@ -235,7 +235,7 @@ export function ProjectCard({ proj }: { proj: Project }) {
             {/* Botão de Visualizar */}
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="bg-transparent border-none shadow-none p-0 hover:none">
+                <Button className="bg-transparent border-none shadow-none p-0 hover:none pcard-3">
                   <Eye className="w-6 h-6 text-custom-blue" />
                 </Button>
               </DialogTrigger>
@@ -264,7 +264,7 @@ export function ProjectCard({ proj }: { proj: Project }) {
             {/* Botão de Editar */}
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="bg-transparent border-none shadow-none p-0 hover:none">
+                <Button className="bg-transparent border-none shadow-none p-0 hover:none pcard-4">
                   <span className="sr-only">Editar</span>
                   <Pen className="w-6 h-6 text-custom-blue" />
                 </Button>
@@ -282,7 +282,7 @@ export function ProjectCard({ proj }: { proj: Project }) {
             {/* Botão de Excluir */}
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="bg-red border-none shadow-none p-0 hover:none ">
+                <Button className="bg-red border-none shadow-none p-0 hover:none pcard-5">
                   <Trash className="w-6 h-6 text-red-800" />
                 </Button>
               </DialogTrigger>
