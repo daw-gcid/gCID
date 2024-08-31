@@ -22,7 +22,7 @@ const ProjectTourGuide = ({
   onTourEnd,
 }: TourGuideProps) => {
   const [progress, setProgress] = useState<number>(1);
-  const totalSteps: number = 7;
+  const totalSteps: number = 2;
 
   const generateSteps = (val: number): Step[] => [
     {
@@ -30,7 +30,7 @@ const ProjectTourGuide = ({
         <div className="mb-4 flex flex-col gap-4 px-2 text-left">
           <p className="mr-4 text-base font-bold">Criar Projeto</p>
           <p className="mr-2 text-sm">
-            Acesse as principais funcionalidades do site por aqui
+            Clique aqui para criar uma nova demanda de projeto
           </p>
           <div className="absolute bottom-[30px] left-[38%] text-sm text-neutral-400">
             {val} de {totalSteps}
@@ -63,9 +63,7 @@ const ProjectTourGuide = ({
           width: 380,
         },
       },
-      spotlightClicks: true,
-    //   event: "click",
-      placement: "left",
+      placement: "top",
       target: "#proj-2",
       title: "",
     },

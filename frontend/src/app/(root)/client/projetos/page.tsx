@@ -64,7 +64,8 @@ export default function ProjectsPage() {
             <Button
               size="icon"
               variant="secondary"
-              className="rounded-full text-custom-green bg-transparent proj-1"
+              className="rounded-full text-custom-green bg-transparent"
+              id="proj-1"
             >
               <CirclePlus className="w-6 h-6" />
             </Button>

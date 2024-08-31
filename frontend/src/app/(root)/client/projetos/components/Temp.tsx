@@ -10,6 +10,8 @@ import { ProjectCard } from "./ProjectCard";
 import * as React from "react";
 import { Button } from "@/src/components/ui/button";
 import { FormCreateProject } from "./FormCreateProject";
+import ProjectCreateTourGuide from "@/src/components/utils/ProjectsCreateTourGuide";
+import { useState } from "react";
 
 interface Project {
   id: number;
@@ -21,18 +23,38 @@ interface Project {
 }
 
 export function ProjectsList({ proj }: { proj: Project[] }) {
+  const [startTour, setStartTour] = useState(true);
+
+  const handleTourEnd = () => {
+    setStartTour(false);
+  };
+
   return (
     <div>
       {/* <ProjectCard proj={proj}/> */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 relative">
+        {startTour && (
+          <div className="absolute w-full">
+            <ProjectCreateTourGuide
+              start={startTour}
+              setStartTour={setStartTour}
+              onTourEnd={handleTourEnd}
+            />
+          </div>
+        )}
         {proj.map((project, index) => (
-          <ProjectCard proj={project} key={index} />
+          <div key={index} id={`pcard-${index + 1}`}>
+            <ProjectCard proj={project} />
+          </div>
         ))}
       </div>
       <div className="fixed bottom-0 right-0 mb-10 mr-10">
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="bg-custom-green text-black font-bold hover:text-white proj-2">
+            <Button
+              className="bg-custom-green text-black font-bold hover:text-white"
+              id="proj-2"
+            >
               Adicionar Projeto
             </Button>
           </DialogTrigger>
